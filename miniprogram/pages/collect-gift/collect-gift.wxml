@@ -1,0 +1,15 @@
+<view class="collect-gift-page">
+  <view class="container">
+    <view class="icon-box">
+      <view class="icon">
+        <text class="icon-text">⭐</text>
+      </view>
+    </view>
+    <view class="title">集点有礼</view>
+    <view class="desc">集点兑换活动</view>
+    <view class="tips">功能即将上线，敬请期待</view>
+    <view class="btn-back" bindtap="goBack">
+      <text>返回</text>
+    </view>
+  </view>
+</view>

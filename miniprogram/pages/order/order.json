@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "点单",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "modal": "/components/modal/modal"
+  },
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#f5f5f5"
+}

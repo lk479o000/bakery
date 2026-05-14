@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: bakery-api-dev
+    build:
+      context: ../..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8150:8150"
+    environment:
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      TZ: Asia/Shanghai
+      NODE_ENV: development
+    restart: always
+    networks:
+      - bakery-dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ../../server:/app
+      - /app/node_modules
+
+networks:
+  bakery-dev:
+    driver: bridge

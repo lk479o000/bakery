@@ -1,0 +1,55 @@
+<view class="agreement-page">
+  <!-- 协议列表 -->
+  <view class="agreement-list">
+    <view class="agreement-item" bindtap="onViewAgreement" data-type="user">
+      <view class="item-left">
+        <text class="item-icon">📝</text>
+        <view class="item-info">
+          <text class="item-title">用户协议</text>
+          <text class="item-desc">吉世面包用户服务协议</text>
+        </view>
+      </view>
+      <text class="item-arrow">›</text>
+    </view>
+
+    <view class="agreement-item" bindtap="onViewAgreement" data-type="privacy">
+      <view class="item-left">
+        <text class="item-icon">🔒</text>
+        <view class="item-info">
+          <text class="item-title">隐私政策</text>
+          <text class="item-desc">吉世面包隐私保护政策</text>
+        </view>
+      </view>
+      <text class="item-arrow">›</text>
+    </view>
+
+    <view class="agreement-item" bindtap="onViewAgreement" data-type="member">
+      <view class="item-left">
+        <text class="item-icon">💳</text>
+        <view class="item-info">
+          <text class="item-title">会员协议</text>
+          <text class="item-desc">吉世面包会员服务协议</text>
+        </view>
+      </view>
+      <text class="item-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 协议详情弹窗 -->
+  <view wx:if="{{showDetail}}" class="detail-modal" bindtap="closeDetail">
+    <view class="detail-content" catchtap="">
+      <view class="detail-header">
+        <text class="detail-title">{{agreementTitle}}</text>
+        <view class="detail-close" bindtap="closeDetail">
+          <text>✕</text>
+        </view>
+      </view>
+      <scroll-view class="detail-body" scroll-y>
+        <rich-text nodes="{{agreementContent}}"></rich-text>
+      </scroll-view>
+      <view class="detail-footer">
+        <button class="detail-btn" bindtap="closeDetail">我知道了</button>
+      </view>
+    </view>
+  </view>
+</view>

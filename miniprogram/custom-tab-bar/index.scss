@@ -1,0 +1,87 @@
+// 自定义TabBar样式
+$primary-color: #4CAF50;
+$primary-dark: #388E3C;
+$text-color: #999;
+$text-active: #333;
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100rpx;
+  background-color: #fff;
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 999;
+  box-shadow: 0 -1rpx 6rpx rgba(0, 0, 0, 0.05);
+}
+
+.tab-bar-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1rpx;
+  background-color: #eee;
+}
+
+.tab-bar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rpx 0;
+
+  &.special-item {
+    position: relative;
+    margin-top: -30rpx;
+  }
+}
+
+.tab-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-bottom: 4rpx;
+}
+
+.tab-text {
+  font-size: 20rpx;
+  color: $text-color;
+
+  &.active {
+    color: $primary-color;
+    font-weight: 600;
+  }
+}
+
+// 中间扫码特殊按钮
+.special-btn {
+  width: 100rpx;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .special-icon {
+    width: 96rpx;
+    height: 96rpx;
+    border-radius: 50%;
+    background: $primary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4rpx 16rpx rgba($primary-color, 0.4);
+
+    &:active {
+      opacity: 0.85;
+      transform: scale(0.95);
+    }
+  }
+
+  .scan-icon {
+    width: 52rpx;
+    height: 52rpx;
+  }
+}

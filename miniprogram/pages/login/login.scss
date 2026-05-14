@@ -1,0 +1,195 @@
+// 变量定义（与首页保持一致）
+$primary-color: #4CAF50;
+$primary-dark: #388E3C;
+$text-primary: #333333;
+$text-secondary: #666666;
+$text-light: #999999;
+$bg-gray: #f5f5f5;
+$border-color: #e5e5e5;
+$border-radius: 12rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+
+// 容器
+.container {
+  min-height: 100vh;
+  background-color: $bg-gray;
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+// 错误提示
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: $spacing-md;
+  border-radius: $border-radius;
+  text-align: center;
+  font-size: 28rpx;
+  margin-bottom: $spacing-lg;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+// 登录区域
+.login-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: $spacing-lg;
+  margin-top: 100rpx;
+}
+
+// 微信登录按钮
+.wechat-login-btn {
+  width: 100%;
+  max-width: 600rpx;
+  padding: $spacing-md 0;
+  background: linear-gradient(135deg, #07C160, #05AE59);
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 64rpx;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  box-shadow: 0 4rpx 12rpx rgba(7, 193, 96, 0.3);
+
+  &::after {
+    border: none;
+  }
+
+  &:active {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}
+
+// 分隔线
+.divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 600rpx;
+  margin: $spacing-md 0;
+
+  .divider-line {
+    flex: 1;
+    height: 2rpx;
+    background-color: $border-color;
+  }
+
+  .divider-text {
+    font-size: 24rpx;
+    color: $text-light;
+    margin: 0 $spacing-md;
+  }
+}
+
+// 手机号登录按钮
+.phone-login-btn {
+  width: 100%;
+  max-width: 600rpx;
+  padding: $spacing-md 0;
+  background: linear-gradient(135deg, $primary-color, $primary-dark);
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 64rpx;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  box-shadow: 0 4rpx 12rpx rgba(212, 165, 116, 0.3);
+
+  &::after {
+    border: none;
+  }
+
+  &:active {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}
+
+// 加载遮罩
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.loading-spinner {
+  width: 56rpx;
+  height: 56rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  border-top: 4rpx solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  color: #ffffff;
+  font-size: 28rpx;
+}
+
+// 动画
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// 响应式设计
+@media (max-width: 375px) {
+  .login-section {
+    margin-top: 60rpx;
+  }
+
+  .wechat-login-btn,
+  .phone-login-btn {
+    font-size: 28rpx;
+    padding: $spacing-sm 0;
+  }
+}
+
+// 底部占位
+.bottom-placeholder {
+  height: 40rpx;
+}

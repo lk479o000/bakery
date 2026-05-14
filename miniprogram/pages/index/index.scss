@@ -1,0 +1,460 @@
+// 变量定义
+$primary-color: #4CAF50;
+$primary-dark: #388E3C;
+$primary-light: #81C784;
+$text-primary: #333333;
+$text-secondary: #666666;
+$text-light: #999999;
+$bg-gray: #f5f5f5;
+$border-color: #e5e5e5;
+$border-radius: 16rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+
+// 容器
+.container {
+  min-height: 100vh;
+  background-color: $bg-gray;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+// 轮播图区域
+.banner-section {
+  background-color: #ffffff;
+  padding: 0;
+
+  .banner-swiper {
+    height: 420rpx;
+  }
+
+  .banner-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .banner-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40rpx;
+  }
+
+  .banner-brand {
+    font-size: 36rpx;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 16rpx;
+    letter-spacing: 2rpx;
+  }
+
+  .banner-slogan {
+    font-size: 44rpx;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 12rpx;
+  }
+
+  .banner-sub-slogan {
+    font-size: 26rpx;
+    color: #666;
+    margin-bottom: 4rpx;
+  }
+
+  .banner-sub-slogan-en {
+    font-size: 20rpx;
+    color: #999;
+  }
+}
+
+// 登录卡片
+.login-card {
+  background-color: #ffffff;
+  margin: $spacing-md;
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+
+  .login-content {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+
+  .login-logo {
+    width: 80rpx;
+    height: 80rpx;
+    margin-right: $spacing-md;
+  }
+
+  .login-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .login-title {
+    font-size: 30rpx;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 8rpx;
+  }
+
+  .login-desc {
+    font-size: 22rpx;
+    color: $text-light;
+  }
+
+  .login-btn {
+    margin: 0;
+    padding: 14rpx 28rpx;
+    background-color: #444;
+    color: #ffffff;
+    font-size: 26rpx;
+    border-radius: 32rpx;
+    line-height: 1.5;
+    border: none;
+
+    &::after {
+      border: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+    }
+  }
+}
+
+// HELLO 服务入口
+.hello-section {
+  background-color: #ffffff;
+  margin: $spacing-md;
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+
+  .hello-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: $spacing-md;
+  }
+
+  .hello-title {
+    font-size: 36rpx;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 4rpx;
+  }
+
+  .hello-subtitle {
+    font-size: 24rpx;
+    color: $text-light;
+  }
+
+  .hello-divider {
+    height: 1rpx;
+    background-color: $border-color;
+    margin-bottom: $spacing-lg;
+  }
+
+  .hello-services {
+    display: flex;
+    gap: $spacing-lg;
+  }
+
+  .service-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-md;
+
+    &:active {
+      opacity: 0.7;
+    }
+  }
+
+  .service-icon {
+    width: 96rpx;
+    height: 96rpx;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $spacing-sm;
+    background-color: #f5f5f5;
+
+    image {
+      width: 56rpx;
+      height: 56rpx;
+    }
+
+    &.pickup-icon {
+      background-color: #FFF3E0;
+    }
+
+    &.delivery-icon {
+      background-color: #E8F5E9;
+    }
+  }
+
+  .service-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .service-name {
+    font-size: 28rpx;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 4rpx;
+  }
+
+  .service-en {
+    font-size: 20rpx;
+    color: $text-light;
+  }
+}
+
+// 推广卡片（领券中心/会员充值）
+.promo-card {
+  background-color: #ffffff;
+  margin: $spacing-md;
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  .promo-left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+
+  .promo-icon {
+    width: 64rpx;
+    height: 64rpx;
+    margin-right: $spacing-md;
+  }
+
+  .promo-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .promo-title {
+    font-size: 30rpx;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 4rpx;
+  }
+
+  .promo-subtitle {
+    font-size: 18rpx;
+    color: $text-light;
+    letter-spacing: 1rpx;
+  }
+
+  .promo-action {
+    display: flex;
+    align-items: center;
+    gap: 8rpx;
+  }
+
+  .promo-illustration {
+    width: 64rpx;
+    height: 64rpx;
+    margin-right: 8rpx;
+  }
+
+  .promo-action-text {
+    font-size: 24rpx;
+    color: $primary-color;
+  }
+
+  .promo-arrow {
+    font-size: 24rpx;
+    color: $primary-color;
+  }
+}
+
+// 品牌介绍区域
+.brand-section {
+  background-color: #ffffff;
+  margin: $spacing-md;
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .brand-illustration {
+    margin-bottom: $spacing-md;
+  }
+
+  .brand-baker {
+    width: 160rpx;
+    height: 160rpx;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: $spacing-lg;
+  }
+
+  .brand-title {
+    font-size: 32rpx;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 8rpx;
+  }
+
+  .brand-subtitle {
+    font-size: 26rpx;
+    color: $text-secondary;
+    margin-bottom: 4rpx;
+  }
+
+  .brand-feature {
+    font-size: 24rpx;
+    color: $text-light;
+  }
+
+  .brand-detail {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    width: 100%;
+  }
+
+  .brand-detail-left,
+  .brand-detail-right {
+    width: 120rpx;
+    height: 120rpx;
+    flex-shrink: 0;
+  }
+
+  .brand-detail-text {
+    font-size: 24rpx;
+    color: $text-secondary;
+    line-height: 1.6;
+    flex: 1;
+  }
+}
+
+// 底部占位
+.bottom-placeholder {
+  height: 120rpx;
+}
+
+// 登录弹窗样式
+.login-modal {
+  padding: 60rpx 48rpx 40rpx !important;
+}
+
+.login-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-modal-logo {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: $spacing-lg;
+}
+
+.login-modal-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 48rpx;
+}
+
+.login-modal-btn {
+  width: 100%;
+  padding: $spacing-md 0;
+  background-color: $primary-color;
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 48rpx;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+
+  &::after {
+    border: none;
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.login-modal-agreement {
+  display: flex;
+  align-items: center;
+  margin-top: $spacing-lg;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.agreement-check {
+  display: flex;
+  align-items: center;
+  margin-right: 4rpx;
+}
+
+.check-icon {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  border: 2rpx solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8rpx;
+  font-size: 20rpx;
+  color: #fff;
+
+  &.checked {
+    background-color: $primary-color;
+    border-color: $primary-color;
+  }
+}
+
+.agreement-text {
+  font-size: 22rpx;
+  color: $text-light;
+}
+
+.agreement-link {
+  font-size: 22rpx;
+  color: $primary-color;
+}

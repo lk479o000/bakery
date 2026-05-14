@@ -1,0 +1,182 @@
+<view class="container">
+  <!-- 顶部配送方式切换 -->
+  <view class="order-type-bar">
+    <view class="store-info" bindtap="onSelectStoreTap">
+      <image class="store-star" src="/icons/star.png" mode="aspectFit" />
+      <text class="store-name">吉世面包</text>
+      <text class="store-distance">距离您{{storeDistance}}</text>
+    </view>
+    <view class="type-tabs">
+      <view class="type-tab {{orderType === 'pickup' ? 'active' : ''}}" bindtap="onOrderTypeChange" data-type="pickup">
+        <text class="tab-text">自取</text>
+      </view>
+      <view class="type-tab {{orderType === 'delivery' ? 'active' : ''}}" bindtap="onOrderTypeChange" data-type="delivery">
+        <text class="tab-text">外卖</text>
+      </view>
+      <view class="type-tab {{orderType === 'express' ? 'active' : ''}}" bindtap="onOrderTypeChange" data-type="express">
+        <text class="tab-text">快递</text>
+      </view>
+    </view>
+    <view class="welcome-bar">
+      <text class="welcome-text">欢迎光临，很高兴为您服务</text>
+      <text class="welcome-more">更多 ▼</text>
+    </view>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="main-content">
+    <!-- 左侧分类栏 -->
+    <scroll-view class="category-sidebar" scroll-y enhanced show-scrollbar="{{false}}">
+      <view 
+        wx:for="{{categoryList}}" 
+        wx:key="id"
+        class="category-item {{currentCategoryId === item.id ? 'active' : ''}}"
+        bindtap="onCategoryTap"
+        data-id="{{item.id}}"
+      >
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </scroll-view>
+
+    <!-- 右侧商品区 -->
+    <view class="product-area">
+      <view wx:if="{{loading}}" class="loading-state">
+        <view class="loading-spinner"></view>
+        <text class="loading-text">加载中...</text>
+      </view>
+
+      <scroll-view 
+        wx:else
+        class="product-list" 
+        scroll-y 
+        enhanced 
+        show-scrollbar="{{false}}"
+        refresher-enabled
+        refresher-triggered="{{refreshing}}"
+        bindrefresherrefresh="onRefresh"
+      >
+        <view wx:if="{{productList.length === 0}}" class="empty-state">
+          <text class="empty-text">暂无商品</text>
+        </view>
+
+        <view 
+          wx:for="{{productList}}" 
+          wx:key="id"
+          class="product-item"
+        >
+          <image class="product-image" src="{{item.image}}" mode="aspectFill" />
+          <view class="product-info">
+            <view class="product-name-row">
+              <text wx:if="{{item.emoji}}" class="product-emoji">{{item.emoji}}</text>
+              <text class="product-name">{{item.name}}</text>
+            </view>
+            <text wx:if="{{item.englishName}}" class="product-en-name">.{{item.englishName}}</text>
+            <text wx:if="{{item.description}}" class="product-desc">{{item.description}}</text>
+            <view class="product-bottom">
+              <text class="current-price">¥{{item.price}}</text>
+              <view class="add-section">
+                <view wx:if="{{item.cartQuantity > 0}}" class="quantity-control">
+                  <view class="btn-minus" bindtap="onMinusTap" data-productid="{{item.id}}">-</view>
+                  <text class="quantity-text">{{item.cartQuantity}}</text>
+                </view>
+                <view 
+                  class="btn-add {{item.stock === 0 ? 'disabled' : ''}}"
+                  bindtap="onAddTap"
+                  data-productid="{{item.id}}"
+                  data-stock="{{item.stock}}"
+                >
+                  <text>+</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="product-list-placeholder"></view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 购物车栏 -->
+  <view class="cart-bar" wx:if="{{cartTotal.count > 0 || cartPanelVisible}}">
+    <view class="cart-content" bindtap="onCartBarTap">
+      <view class="cart-icon-wrap">
+        <view class="cart-icon">🛒</view>
+        <view wx:if="{{cartTotal.count > 0}}" class="cart-badge">{{cartTotal.count}}</view>
+      </view>
+      <view class="cart-info">
+        <text class="cart-total">¥{{cartTotal.amount}}</text>
+      </view>
+    </view>
+    <view class="cart-btn {{cartTotal.count === 0 ? 'disabled' : ''}}" bindtap="onCheckoutTap">
+      选好了
+    </view>
+  </view>
+
+  <!-- 购物车面板遮罩 -->
+  <view 
+    class="cart-panel-mask {{cartPanelVisible ? 'show' : ''}}"
+    bindtap="onMaskTap"
+    catchtouchmove="preventTouchMove"
+  ></view>
+
+  <!-- 购物车面板 -->
+  <view class="cart-panel {{cartPanelVisible ? 'show' : ''}}">
+    <view class="cart-panel-header">
+      <text class="panel-title">已选商品</text>
+      <view class="clear-btn" bindtap="onClearCartTap">
+        <text>清空</text>
+      </view>
+    </view>
+    <scroll-view class="cart-panel-list" scroll-y>
+      <view 
+        wx:for="{{cartList}}" 
+        wx:key="id"
+        class="cart-panel-item"
+      >
+        <image class="cart-item-image" src="{{item.productImage}}" mode="aspectFill" />
+        <view class="cart-item-info">
+          <text class="cart-item-name">{{item.productName}}</text>
+          <text class="cart-item-price">¥{{item.price}}</text>
+        </view>
+        <view class="cart-item-control">
+          <view class="btn-minus" bindtap="onCartMinusTap" data-cartid="{{item.id}}" data-quantity="{{item.quantity}}">-</view>
+          <text class="quantity-text">{{item.quantity}}</text>
+          <view class="btn-plus" bindtap="onCartPlusTap" data-cartid="{{item.id}}" data-productid="{{item.productId}}" data-stock="{{item.stock}}" data-quantity="{{item.quantity}}">+</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 登录弹窗 -->
+  <modal 
+    show="{{loginModalVisible}}" 
+    show-close="{{true}}"
+    show-buttons="{{false}}"
+    custom-class="login-modal"
+    bind:cancel="onLoginModalClose"
+  >
+    <view class="login-modal-content">
+      <image class="login-modal-logo" src="/assets/images/logo-baker.png" mode="aspectFit" />
+      <text class="login-modal-title">欢迎来到吉世面包</text>
+      <button 
+        class="login-modal-btn" 
+        open-type="getPhoneNumber" 
+        bindgetphonenumber="handleGetPhoneNumber"
+        loading="{{loginLoading}}"
+        disabled="{{loginLoading}}"
+      >
+        手机号码登录/注册
+      </button>
+      <view class="login-modal-agreement">
+        <view class="agreement-check" bindtap="onAgreementToggle">
+          <view class="check-icon {{agreementChecked ? 'checked' : ''}}">
+            <text wx:if="{{agreementChecked}}">✓</text>
+          </view>
+          <text class="agreement-text">我已阅读并同意</text>
+        </view>
+        <text class="agreement-link" bindtap="onViewAgreement">《用户协议》</text>
+      </view>
+    </view>
+  </modal>
+</view>

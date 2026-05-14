@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "吉世面包",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "modal": "/components/modal/modal"
+  }
+}

@@ -1,0 +1,59 @@
+<view class="balance-record">
+  <!-- 未登录状态 -->
+  <view wx:if="{{!isLogin}}" class="login-tip">
+    <view class="login-icon">
+      <text>👤</text>
+    </view>
+    <view class="login-text">请登录查看余额明细</view>
+    <button class="login-btn" bindtap="goToLogin">去登录</button>
+  </view>
+
+  <!-- 已登录状态 -->
+  <view wx:else>
+    <!-- 空状态 -->
+    <view wx:if="{{isEmpty}}" class="empty-tip">
+      <view class="empty-icon">
+        <text>💰</text>
+      </view>
+      <view class="empty-text">暂无余额明细</view>
+      <button class="empty-btn" bindtap="goToRecharge">去充值</button>
+    </view>
+
+    <!-- 余额明细列表 -->
+    <view wx:else class="record-list">
+      <view wx:for="{{records}}" wx:key="id" class="record-item">
+        <view class="record-header">
+          <view class="record-type">{{item.typeText}}</view>
+          <view class="record-time">{{item.createTime}}</view>
+        </view>
+        <view class="record-content">
+          <view class="record-amount {{item.type === 'recharge' ? 'amount-in' : 'amount-out'}}">
+            {{item.type === 'recharge' ? '+' : '-'}}¥{{item.amount}}
+          </view>
+          <view class="record-balance">余额：¥{{item.balance}}</view>
+        </view>
+        <view wx:if="{{item.remark}}" class="record-remark">{{item.remark}}</view>
+      </view>
+
+      <!-- 上拉加载更多 -->
+      <view class="load-more">
+        <view wx:if="{{isLoadingMore}}" class="loading">加载中...</view>
+        <view wx:elif="{{noMoreData}}" class="no-more">没有更多数据了</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中提示 -->
+  <view wx:if="{{isLoading}}" class="loading-overlay">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <view class="loading-text">加载中...</view>
+    </view>
+  </view>
+
+  <!-- 错误提示 -->
+  <view wx:if="{{errorMessage}}" class="error-tip">
+    <view class="error-text">{{errorMessage}}</view>
+    <button class="error-btn" bindtap="retry">重试</button>
+  </view>
+</view>

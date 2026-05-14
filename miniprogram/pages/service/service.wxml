@@ -1,0 +1,55 @@
+<view class="service-container">
+  <!-- 加载状态 -->
+  <view wx:if="{{ loading }}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 错误状态 -->
+  <view wx:elif="{{ error }}" class="error-container">
+    <text class="error-icon">⚠️</text>
+    <text class="error-text">{{ errorMessage }}</text>
+    <button class="retry-button" bindtap="loadServiceInfo">重试</button>
+  </view>
+
+  <!-- 客服信息 -->
+  <view wx:else class="service-content">
+    <!-- 客服入口按钮 -->
+    <view class="service-header">
+      <button class="service-button" bindtap="openCustomerServiceChat">
+        <text class="service-button-text">在线客服</text>
+      </button>
+    </view>
+
+    <!-- 提示文案 -->
+    <view class="service-tip">
+      <text class="tip-text">如有问题，欢迎联系我们</text>
+      <text class="time-text">{{ serviceInfo.serviceTime }}</text>
+    </view>
+
+    <!-- 联系方式列表 -->
+    <view class="contact-list">
+      <!-- 电话客服 -->
+      <view class="contact-item">
+        <view class="contact-info">
+          <text class="contact-label">电话客服</text>
+          <text class="contact-value">{{ serviceInfo.phone }}</text>
+        </view>
+        <button class="contact-button" bindtap="makePhoneCall">
+          <text class="button-text">拨打电话</text>
+        </button>
+      </view>
+
+      <!-- 微信客服 -->
+      <view class="contact-item">
+        <view class="contact-info">
+          <text class="contact-label">微信客服</text>
+          <text class="contact-value">{{ serviceInfo.wechat }}</text>
+        </view>
+        <button class="contact-button" bindtap="copyWechat">
+          <text class="button-text">{{ copySuccess ? '已复制' : '复制' }}</text>
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

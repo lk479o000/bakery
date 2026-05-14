@@ -1,0 +1,46 @@
+<view class="about-page">
+  <!-- Logo和品牌名 -->
+  <view class="brand-section">
+    <image class="brand-logo" src="/assets/images/logo-baker.png" mode="aspectFit" />
+    <text class="brand-name">吉世面包</text>
+    <text class="brand-en">JISAYBREAD COFFEE</text>
+  </view>
+
+  <!-- 品牌简介 -->
+  <view class="info-card">
+    <text class="info-title">品牌简介</text>
+    <text class="info-content">吉世面包，坚持0添加的坚持，100%的满足。每日现作鲜活面团，挑选真材实料，少科技添加，吃着更放心。</text>
+  </view>
+
+  <!-- 营业时间 -->
+  <view class="info-card">
+    <text class="info-title">营业时间</text>
+    <view class="info-row">
+      <text class="info-icon">🕐</text>
+      <text class="info-text">09:00 - 21:00</text>
+    </view>
+  </view>
+
+  <!-- 联系电话 -->
+  <view class="info-card">
+    <text class="info-title">联系电话</text>
+    <view class="info-row" bindtap="onCallPhone">
+      <text class="info-icon">📞</text>
+      <text class="info-text link-text">028-87654321</text>
+    </view>
+  </view>
+
+  <!-- 店铺地址 -->
+  <view class="info-card">
+    <text class="info-title">店铺地址</text>
+    <view class="info-row" bindtap="onOpenMap">
+      <text class="info-icon">📍</text>
+      <text class="info-text link-text">金祥路35号</text>
+    </view>
+  </view>
+
+  <!-- 底部版权 -->
+  <view class="footer">
+    <text class="footer-text">© 2024 吉世面包 All Rights Reserved</text>
+  </view>
+</view>

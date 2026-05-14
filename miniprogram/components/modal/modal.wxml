@@ -1,0 +1,29 @@
+<!-- 遮罩层 -->
+<view 
+  class="modal-mask {{show ? 'show' : ''}}" 
+  bindtap="onMaskTap"
+  catchtouchmove="preventTouchMove"
+></view>
+
+<!-- 弹窗内容 -->
+<view class="modal-container {{show ? 'show' : ''}}" catchtouchmove="preventTouchMove">
+  <view class="modal-content {{customClass}}">
+    <!-- 关闭按钮 -->
+    <view wx:if="{{showClose}}" class="modal-close" bindtap="onCancel">×</view>
+    
+    <!-- 标题 -->
+    <view wx:if="{{title}}" class="modal-title">{{title}}</view>
+    
+    <!-- 内容区域（slot） -->
+    <slot></slot>
+    
+    <!-- 文字内容 -->
+    <view wx:if="{{content}}" class="modal-text">{{content}}</view>
+    
+    <!-- 按钮区域 -->
+    <view wx:if="{{showButtons}}" class="modal-buttons">
+      <button wx:if="{{showCancel}}" class="modal-btn cancel" bindtap="onCancel">{{cancelText}}</button>
+      <button class="modal-btn confirm" bindtap="onConfirm">{{confirmText}}</button>
+    </view>
+  </view>
+</view>

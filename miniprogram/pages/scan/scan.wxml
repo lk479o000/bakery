@@ -1,0 +1,30 @@
+<view class="scan-page">
+  <!-- 顶部提示 -->
+  <view class="scan-header">
+    <image class="scan-logo" src="/assets/images/logo-baker.png" mode="aspectFit" />
+    <text class="scan-title">扫码点单</text>
+    <text class="scan-desc">扫描门店桌面二维码，快速开始点餐</text>
+  </view>
+
+  <!-- 扫码按钮 -->
+  <view class="scan-action" bindtap="onScanTap">
+    <view class="scan-circle">
+      <view class="scan-icon-wrap">
+        <text class="scan-icon-text">📷</text>
+      </view>
+    </view>
+    <text class="scan-btn-text">点击扫码</text>
+  </view>
+
+  <!-- 底部说明 -->
+  <view class="scan-tips">
+    <view class="tip-item">
+      <text class="tip-icon">📍</text>
+      <text class="tip-text">到店扫码点单更便捷</text>
+    </view>
+    <view class="tip-item">
+      <text class="tip-icon">⚡</text>
+      <text class="tip-text">无需排队，即点即取</text>
+    </view>
+  </view>
+</view>

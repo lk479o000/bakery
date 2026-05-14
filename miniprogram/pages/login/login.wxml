@@ -1,0 +1,45 @@
+<view class="container">
+  <!-- 错误提示 -->
+  <view wx:if="{{ errorMessage }}" class="error-message">
+    {{ errorMessage }}
+  </view>
+
+  <!-- 登录区域 -->
+  <view class="login-section">
+    <!-- 微信登录按钮 -->
+    <button 
+      class="wechat-login-btn" 
+      bindtap="handleWechatLogin"
+      loading="{{ loading }}"
+      disabled="{{ loading }}"
+    >
+      微信登录
+    </button>
+
+    <!-- 分隔线 -->
+    <view class="divider">
+      <view class="divider-line"></view>
+      <view class="divider-text">其他登录方式</view>
+      <view class="divider-line"></view>
+    </view>
+
+    <!-- 获取手机号登录按钮 -->
+    <button 
+      class="phone-login-btn" 
+      open-type="getPhoneNumber" 
+      bindgetphonenumber="handleGetPhoneNumber"
+      loading="{{ loading }}"
+      disabled="{{ loading }}"
+    >
+      手机号登录
+    </button>
+  </view>
+
+  <!-- 加载遮罩 -->
+  <view wx:if="{{ loading }}" class="loading-overlay">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">登录中...</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,22 @@
+<view class="tab-bar">
+  <view class="tab-bar-border"></view>
+  <view 
+    wx:for="{{list}}" 
+    wx:key="index" 
+    class="tab-bar-item {{item.isSpecial ? 'special-item' : ''}}" 
+    data-index="{{index}}" 
+    bindtap="switchTab"
+  >
+    <!-- 中间扫码特殊按钮 -->
+    <view wx:if="{{item.isSpecial}}" class="special-btn">
+      <view class="special-icon">
+        <image class="scan-icon" src="/icons/scan.png" mode="aspectFit" />
+      </view>
+    </view>
+    <!-- 普通tab按钮 -->
+    <block wx:else>
+      <image class="tab-icon" src="{{selected === index ? item.selectedIconPath : item.iconPath}}" mode="aspectFit" />
+      <text class="tab-text {{selected === index ? 'active' : ''}}">{{item.text}}</text>
+    </block>
+  </view>
+</view>

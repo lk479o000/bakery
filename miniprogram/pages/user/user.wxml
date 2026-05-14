@@ -1,0 +1,174 @@
+<view class="user-page">
+  <!-- 用户信息区域 -->
+  <view class="user-header">
+    <view wx:if="{{!isLoggedIn}}" class="not-logged-in">
+      <view class="user-name">用户_{{randomId}}</view>
+      <view class="user-tip">为给您提供更好的服务请授权登录</view>
+      <button class="login-register-btn" bindtap="handleLogin">登录/注册</button>
+    </view>
+    <view wx:else class="logged-in-info">
+      <view class="user-name">{{userInfo.nickname || '用户'}}</view>
+      <view class="user-tip">{{userInfo.phone || '已登录'}}</view>
+    </view>
+  </view>
+
+  <!-- 资产统计 -->
+  <view class="assets-section">
+    <view class="asset-item" bindtap="navigateToPoints">
+      <text class="asset-value">{{isLoggedIn ? points : '--'}}</text>
+      <text class="asset-label">积分</text>
+    </view>
+    <view class="asset-item" bindtap="navigateToMyCoupon">
+      <text class="asset-value">{{isLoggedIn ? couponCount : '--'}}</text>
+      <text class="asset-label">优惠券</text>
+    </view>
+    <view class="asset-item" bindtap="navigateToBalance">
+      <text class="asset-value">{{isLoggedIn ? balance : '--'}}</text>
+      <text class="asset-label">余额</text>
+    </view>
+  </view>
+
+  <!-- 我的订单快捷入口 -->
+  <view class="section-card">
+    <view class="section-header">我的订单</view>
+    <view class="quick-grid">
+      <view class="quick-item" bindtap="navigateToOrderList">
+        <view class="quick-icon">
+          <image src="/icons/order-box.png" mode="aspectFit" />
+        </view>
+        <text class="quick-label">我的订单</text>
+      </view>
+      <view class="quick-item" bindtap="navigateToAddress">
+        <view class="quick-icon">
+          <image src="/icons/map.png" mode="aspectFit" />
+        </view>
+        <text class="quick-label">地址管理</text>
+      </view>
+      <view class="quick-item" bindtap="navigateToService">
+        <view class="quick-icon">
+          <image src="/icons/chat.png" mode="aspectFit" />
+        </view>
+        <text class="quick-label">联系客服</text>
+      </view>
+      <view class="quick-item" bindtap="navigateToAbout">
+        <view class="quick-icon">
+          <image src="/icons/info.png" mode="aspectFit" />
+        </view>
+        <text class="quick-label">关于我们</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 更多功能 -->
+  <view class="section-card">
+    <view class="section-header">更多功能</view>
+    <view class="more-grid">
+      <view 
+        wx:for="{{moreFunctions}}" 
+        wx:key="key" 
+        class="more-item" 
+        bindtap="onMoreFunctionTap"
+        data-key="{{item.key}}"
+      >
+        <view class="more-icon">{{item.icon}}</view>
+        <text class="more-label">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我的余额 -->
+  <view class="balance-card">
+    <view class="balance-header">
+      <view class="balance-title-area">
+        <image class="balance-wallet-icon" src="/icons/wallet.png" mode="aspectFit" />
+        <text class="balance-title">我的余额</text>
+      </view>
+      <text class="balance-arrow">></text>
+    </view>
+    <view class="balance-amount">¥ {{isLoggedIn ? balanceText : '0.00'}}</view>
+    <button class="recharge-btn" bindtap="navigateToRecharge">立即充值</button>
+  </view>
+
+  <!-- 附近门店 -->
+  <view class="section-card" bindtap="navigateToStoreList">
+    <view class="store-header-section">
+      <view class="store-title-area">
+        <image class="store-icon" src="/icons/store-front.png" mode="aspectFit" />
+        <text class="section-header">附近门店</text>
+      </view>
+      <text class="section-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 储值权益 -->
+  <view class="section-card" wx:if="{{rechargePackages.length > 0}}">
+    <view class="benefit-header">
+      <text class="benefit-title">储值权益</text>
+      <text class="benefit-subtitle">{{rechargePackages.length}}种付费权益等你来享受</text>
+    </view>
+    <view class="benefit-cards">
+      <view 
+        wx:for="{{rechargePackages}}" 
+        wx:key="id" 
+        class="benefit-card"
+        bindtap="navigateToRecharge"
+      >
+        <view class="benefit-card-header">
+          <text class="benefit-card-name">吉世面包储值活动</text>
+          <view wx:if="{{item.isRecommended}}" class="recommend-tag">推荐</view>
+        </view>
+        <text class="benefit-card-desc">{{item.description}}</text>
+        <text class="benefit-card-amount">¥ {{item.amount}}.00</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退出登录按钮 -->
+  <view wx:if="{{isLoggedIn}}" class="logout-section">
+    <button class="logout-btn" bindtap="showLogoutConfirm">退出登录</button>
+  </view>
+
+  <!-- 退出登录确认弹窗 -->
+  <view wx:if="{{showLogoutModal}}" class="confirm-modal" bindtap="cancelLogout">
+    <view class="modal-content" catchtap="">
+      <text class="modal-title">退出登录</text>
+      <text class="modal-message">确定要退出登录吗？</text>
+      <view class="modal-buttons">
+        <button class="modal-btn cancel" bindtap="cancelLogout">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmLogout">确定</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 登录弹窗 -->
+  <modal 
+    show="{{loginModalVisible}}" 
+    show-close="{{true}}"
+    show-buttons="{{false}}"
+    custom-class="login-modal"
+    bind:cancel="onLoginModalClose"
+  >
+    <view class="login-modal-content">
+      <image class="login-modal-logo" src="/assets/images/logo-baker.png" mode="aspectFit" />
+      <text class="login-modal-title">欢迎来到吉世面包</text>
+      <button 
+        class="login-modal-btn" 
+        open-type="getPhoneNumber" 
+        bindgetphonenumber="handleGetPhoneNumber"
+        loading="{{loginLoading}}"
+        disabled="{{loginLoading}}"
+      >
+        手机号码登录/注册
+      </button>
+      <view class="login-modal-agreement">
+        <view class="agreement-check" bindtap="onAgreementToggle">
+          <view class="check-icon {{agreementChecked ? 'checked' : ''}}">
+            <text wx:if="{{agreementChecked}}">✓</text>
+          </view>
+          <text class="agreement-text">我已阅读并同意</text>
+        </view>
+        <text class="agreement-link" bindtap="onViewAgreement">《用户协议》</text>
+      </view>
+    </view>
+  </modal>
+</view>

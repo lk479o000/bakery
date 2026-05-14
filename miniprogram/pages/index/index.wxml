@@ -1,0 +1,142 @@
+<view class="container">
+  <!-- 轮播图区域 -->
+  <view class="banner-section">
+    <swiper class="banner-swiper" indicator-dots autoplay circular interval="3000" duration="500">
+      <swiper-item wx:for="{{bannerList}}" wx:key="id">
+        <view class="banner-item">
+          <image class="banner-image" src="{{item.image}}" mode="aspectFill" />
+          <view class="banner-overlay">
+            <text class="banner-brand">{{brandInfo.englishName}}</text>
+            <text class="banner-slogan">{{brandInfo.slogan}}</text>
+            <text class="banner-sub-slogan">{{brandInfo.subSlogan}}</text>
+            <text class="banner-sub-slogan-en">0 added persistence 100% satisfaction</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 登录卡片 -->
+  <view class="login-card" wx:if="{{!isLoggedIn}}" bindtap="onLoginTap">
+    <view class="login-content">
+      <image class="login-logo" src="/assets/images/logo-baker.png" mode="aspectFit" />
+      <view class="login-info">
+        <text class="login-title">欢迎光临，请登录</text>
+        <text class="login-desc">成为会员，享受更多会员权益</text>
+      </view>
+    </view>
+    <button class="login-btn">立即登录</button>
+  </view>
+
+  <!-- 登录弹窗 -->
+  <modal 
+    show="{{loginModalVisible}}" 
+    show-close="{{true}}"
+    show-buttons="{{false}}"
+    custom-class="login-modal"
+    bind:cancel="onLoginModalClose"
+  >
+    <view class="login-modal-content">
+      <image class="login-modal-logo" src="/assets/images/logo-baker.png" mode="aspectFit" />
+      <text class="login-modal-title">欢迎来到吉世面包</text>
+      <button 
+        class="login-modal-btn" 
+        open-type="getPhoneNumber" 
+        bindgetphonenumber="handleGetPhoneNumber"
+        loading="{{loginLoading}}"
+        disabled="{{loginLoading}}"
+      >
+        手机号码登录/注册
+      </button>
+      <view class="login-modal-agreement">
+        <view class="agreement-check" bindtap="onAgreementToggle">
+          <view class="check-icon {{agreementChecked ? 'checked' : ''}}">
+            <text wx:if="{{agreementChecked}}">✓</text>
+          </view>
+          <text class="agreement-text">我已阅读并同意</text>
+        </view>
+        <text class="agreement-link" bindtap="onViewAgreement">《用户协议》</text>
+      </view>
+    </view>
+  </modal>
+
+  <!-- HELLO 服务入口卡片 -->
+  <view class="hello-section">
+    <view class="hello-header">
+      <text class="hello-title">HELLO</text>
+      <text class="hello-subtitle">欢迎光临 面包的日常您</text>
+    </view>
+    <view class="hello-divider"></view>
+    <view class="hello-services">
+      <view class="service-item" bindtap="onPickupTap">
+        <view class="service-icon pickup-icon">
+          <image src="/icons/store.png" mode="aspectFit" />
+        </view>
+        <view class="service-text">
+          <text class="service-name">自提</text>
+          <text class="service-en">PICK UP</text>
+        </view>
+      </view>
+      <view class="service-item" bindtap="onDeliveryTap">
+        <view class="service-icon delivery-icon">
+          <image src="/icons/delivery.png" mode="aspectFit" />
+        </view>
+        <view class="service-text">
+          <text class="service-name">外卖</text>
+          <text class="service-en">DELIVERY</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 领券中心卡片 -->
+  <view class="promo-card" bindtap="onCouponTap">
+    <view class="promo-left">
+      <image class="promo-icon" src="/icons/coupon-center.png" mode="aspectFit" />
+      <view class="promo-info">
+        <text class="promo-title">领券中心</text>
+        <text class="promo-subtitle">COUPON COLLECTION CENTER</text>
+      </view>
+    </view>
+    <view class="promo-action">
+      <text class="promo-action-text">点击领取</text>
+      <text class="promo-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 会员充值卡片 -->
+  <view class="promo-card" bindtap="onRechargeTap">
+    <view class="promo-left">
+      <image class="promo-icon" src="/icons/recharge.png" mode="aspectFit" />
+      <view class="promo-info">
+        <text class="promo-title">会员充值</text>
+        <text class="promo-subtitle">MEMBER RECHARGE</text>
+      </view>
+    </view>
+    <view class="promo-action">
+      <image class="promo-illustration" src="/assets/images/donut.png" mode="aspectFit" />
+      <text class="promo-action-text">立即充值</text>
+      <text class="promo-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 品牌介绍区域 -->
+  <view class="brand-section">
+    <view class="brand-illustration">
+      <image class="brand-baker" src="/assets/images/baker.png" mode="aspectFit" />
+    </view>
+    <view class="brand-text">
+      <text class="brand-title">面包特点</text>
+      <text class="brand-subtitle">挑选真材实料</text>
+      <text class="brand-feature">{{brandInfo.features}}</text>
+    </view>
+    <view class="brand-detail">
+      <image class="brand-detail-left" src="/assets/images/chef-cook.png" mode="aspectFit" />
+      <text class="brand-detail-text">{{brandInfo.description}}</text>
+      <image class="brand-detail-right" src="/assets/images/knead-dough.png" mode="aspectFit" />
+    </view>
+  </view>
+
+  <!-- 底部占位 -->
+  <view class="bottom-placeholder"></view>
+</view>

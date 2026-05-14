@@ -1,0 +1,49 @@
+# 微信小程序开发工具生成的文件
+miniprogram/.vscode/
+miniprogram/.miniprogram/
+miniprogram/node_modules/
+miniprogram/dist/
+miniprogram/build/
+
+# 后端服务
+server/node_modules/
+server/.env
+server/dist/
+server/build/
+server/logs/
+
+# 通用忽略规则
+.DS_Store
+*.swp
+*.swo
+*~
+
+# 编辑器配置
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 编译生成的文件
+build/
+dist/
+
+# 测试相关
+coverage/
+.nyc_output/
+
+# 日志文件
+*.log
+logs/
+
+# 图片文件
+images-bak/
+images-demo/

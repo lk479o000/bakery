@@ -1,0 +1,107 @@
+<view class="address-edit">
+  <!-- 表单区域 -->
+  <view class="form-container">
+    <!-- 收货人姓名 -->
+    <view class="form-item">
+      <view class="form-label">收货人</view>
+      <input 
+        class="form-input" 
+        placeholder="请输入收货人姓名" 
+        value="{{formData.name}}" 
+        bindinput="handleInput" 
+        data-field="name"
+      />
+      <view class="form-error" wx:if="{{formErrors.name}}">{{formErrors.name}}</view>
+    </view>
+
+    <!-- 手机号码 -->
+    <view class="form-item">
+      <view class="form-label">手机号码</view>
+      <input 
+        class="form-input" 
+        placeholder="请输入手机号码" 
+        value="{{formData.phone}}" 
+        bindinput="handleInput" 
+        data-field="phone"
+        type="number"
+      />
+      <view class="form-error" wx:if="{{formErrors.phone}}">{{formErrors.phone}}</view>
+    </view>
+
+    <!-- 省份 -->
+    <view class="form-item">
+      <view class="form-label">省份</view>
+      <input 
+        class="form-input" 
+        placeholder="请输入省份" 
+        value="{{formData.province}}" 
+        bindinput="handleInput" 
+        data-field="province"
+      />
+      <view class="form-error" wx:if="{{formErrors.province}}">{{formErrors.province}}</view>
+    </view>
+
+    <!-- 城市 -->
+    <view class="form-item">
+      <view class="form-label">城市</view>
+      <input 
+        class="form-input" 
+        placeholder="请输入城市" 
+        value="{{formData.city}}" 
+        bindinput="handleInput" 
+        data-field="city"
+      />
+      <view class="form-error" wx:if="{{formErrors.city}}">{{formErrors.city}}</view>
+    </view>
+
+    <!-- 区县 -->
+    <view class="form-item">
+      <view class="form-label">区县</view>
+      <input 
+        class="form-input" 
+        placeholder="请输入区县" 
+        value="{{formData.district}}" 
+        bindinput="handleInput" 
+        data-field="district"
+      />
+      <view class="form-error" wx:if="{{formErrors.district}}">{{formErrors.district}}</view>
+    </view>
+
+    <!-- 详细地址 -->
+    <view class="form-item">
+      <view class="form-label">详细地址</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请输入详细地址" 
+        value="{{formData.detail}}" 
+        bindinput="handleInput" 
+        data-field="detail"
+        rows="3"
+      />
+      <view class="form-error" wx:if="{{formErrors.detail}}">{{formErrors.detail}}</view>
+    </view>
+
+    <!-- 是否默认地址 -->
+    <view class="form-item checkbox-item">
+      <view class="form-label">默认地址</view>
+      <checkbox 
+        class="form-checkbox" 
+        value="{{formData.isDefault}}" 
+        checked="{{formData.isDefault}}" 
+        bindchange="handleCheckboxChange"
+      />
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-button-container">
+    <button 
+      class="save-button" 
+      bindtap="handleSave" 
+      loading="{{loading}}" 
+      disabled="{{loading}}"
+    >
+      保存
+    </button>
+  </view>
+</view>

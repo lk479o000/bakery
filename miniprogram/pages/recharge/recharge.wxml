@@ -1,0 +1,74 @@
+<view class="recharge-page">
+  <!-- 余额信息 -->
+  <view class="balance-card">
+    <view class="balance-row">
+      <view class="balance-left">
+        <text class="balance-icon">💰</text>
+        <text class="balance-label">我的余额</text>
+      </view>
+      <text class="balance-amount">¥{{userBalance}}</text>
+    </view>
+    <button class="recharge-now-btn" bindtap="scrollToPackages">立即充值</button>
+  </view>
+
+  <!-- 储值权益标题 -->
+  <view class="section-header">
+    <text class="section-title">储值权益</text>
+    <text class="section-subtitle">{{rechargeList.length}}种付费权益等你来享受</text>
+  </view>
+
+  <!-- 储值活动卡片 - 并排两列 -->
+  <view class="recharge-cards" id="packagesSection">
+    <view 
+      wx:for="{{rechargeList}}" 
+      wx:key="id" 
+      wx:for-item="item"
+      class="recharge-card {{selectedPackage && selectedPackage.id === item.id ? 'selected' : ''}}"
+      bindtap="selectPackage"
+      data-item="{{item}}"
+    >
+      <!-- 推荐标签 -->
+      <view class="recommended-tag" wx:if="{{item.isRecommended}}">推荐</view>
+      
+      <!-- 卡片内容 -->
+      <text class="card-activity-name">吉世面包储值活动</text>
+      <text class="card-gift-desc">储{{item.amount}}送{{item.giftAmount}}</text>
+      <text class="card-price">¥ {{item.amount}}.00</text>
+      
+      <!-- 选中/跳转图标 -->
+      <view class="card-arrow">
+        <text class="arrow-icon">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="bottom-info">
+    <text class="bottom-text">小程序餐饮系统</text>
+    <text class="bottom-link" bindtap="onLearnMore">点击了解详情</text>
+  </view>
+
+  <!-- 底部支付栏 -->
+  <view class="pay-bar" wx:if="{{selectedPackage}}">
+    <view class="pay-info">
+      <text class="pay-label">充值金额：</text>
+      <text class="pay-amount">¥{{selectedPackage.price}}</text>
+    </view>
+    <button 
+      class="pay-btn" 
+      bindtap="confirmRecharge"
+      disabled="{{paymentLoading}}"
+      loading="{{paymentLoading}}"
+    >
+      确认充值
+    </button>
+  </view>
+
+  <!-- 未登录提示 -->
+  <view class="login-overlay" wx:if="{{!isLoggedIn}}">
+    <view class="login-card">
+      <text class="login-text">请先登录</text>
+      <button class="login-btn" bindtap="goToLogin">去登录</button>
+    </view>
+  </view>
+</view>

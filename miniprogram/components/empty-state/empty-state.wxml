@@ -1,0 +1,5 @@
+<view class="empty-state">
+  <view class="empty-icon">{{defaultIcons[type] || '📭'}}</view>
+  <text class="empty-text">{{message || defaultMessages[type]}}</text>
+  <button wx:if="{{buttonText}}" class="empty-btn" bindtap="onButtonClick">{{buttonText}}</button>
+</view>

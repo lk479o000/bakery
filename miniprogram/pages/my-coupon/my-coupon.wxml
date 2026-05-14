@@ -1,0 +1,66 @@
+<view class="container">
+  <!-- 状态筛选 -->
+  <view class="status-tabs">
+    <view 
+      wx:for="{{statusOptions}}" 
+      wx:key="value"
+      class="status-tab {{currentStatus === item.value ? 'active' : ''}}"
+      bindtap="handleStatusChange"
+      data-status="{{item.value}}"
+    >
+      {{item.label}}
+    </view>
+  </view>
+
+  <!-- 优惠券列表 -->
+  <view wx:if="{{!empty && !loading && couponList.length > 0}}" class="coupon-list">
+    <view 
+      wx:for="{{couponList}}" 
+      wx:key="id"
+      class="coupon-card {{couponList[index].status === 1 ? 'used' : couponList[index].status === 2 ? 'expired' : ''}}"
+    >
+      <view class="coupon-left">
+        <view class="coupon-amount">¥{{couponList[index].amount}}</view>
+        <view class="coupon-condition">满{{couponList[index].minAmount}}可用</view>
+      </view>
+      <view class="coupon-right">
+        <view class="coupon-title">{{couponList[index].couponName}}</view>
+        <view class="coupon-validity">有效期至：{{couponList[index].expireAt}}</view>
+        <button 
+          wx:if="{{couponList[index].status === 0}}"
+          class="use-btn"
+          bindtap="handleUseCoupon"
+          data-id="{{couponList[index].id}}"
+        >
+          去使用
+        </button>
+        <view wx:else class="status-tag">
+          {{couponList[index].status === 1 ? '已使用' : '已过期'}}
+        </view>
+      </view>
+      <view class="coupon-corner"></view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{empty && !loading}}" class="empty">
+    <view class="empty-icon">🎫</view>
+    <view class="empty-text">
+      {{currentStatus === 0 ? '暂无可用优惠券，快去领取吧！' : 
+        currentStatus === 1 ? '暂无已使用的优惠券' : '暂无已过期的优惠券'}}
+    </view>
+    <button wx:if="{{currentStatus === 0}}" class="empty-btn" bindtap="handleGoReceive">去领券</button>
+  </view>
+
+  <!-- 未登录状态 -->
+  <view wx:if="{{!isLoggedIn}}" class="not-login">
+    <view class="not-login-icon">🔒</view>
+    <view class="not-login-text">请先登录</view>
+    <button class="login-btn" bindtap="handleGoLogin">去登录</button>
+  </view>
+</view>

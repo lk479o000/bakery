@@ -1,0 +1,39 @@
+<!-- 未登录状态 -->
+<view wx:if="{{!isLoggedIn}}" class="login-tip">
+  <image src="/assets/icon-login.png" class="login-icon" />
+  <text class="login-text">登录后领取优惠券</text>
+  <button class="login-btn" bindtap="goLogin">去登录</button>
+</view>
+
+<!-- 加载状态 -->
+<view wx:elif="{{loading}}" class="loading-container">
+  <van-loading type="spinner" color="#1989fa" />
+  <text class="loading-text">加载中...</text>
+</view>
+
+<!-- 空状态 -->
+<view wx:elif="{{empty}}" class="empty-container">
+  <image src="/assets/icon-empty.png" class="empty-icon" />
+  <text class="empty-text">暂无可用优惠券</text>
+  <button class="empty-btn" bindtap="goShopping">去逛逛</button>
+</view>
+
+<!-- 优惠券列表 -->
+<view wx:else class="coupon-list">
+  <view wx:for="{{couponList}}" wx:key="id" class="coupon-item">
+    <view class="coupon-info">
+      <text class="coupon-name">{{item.name}}</text>
+      <text class="coupon-value">¥{{item.value}}</text>
+      <text class="coupon-condition">满{{item.minAmount}}元可用</text>
+      <text class="coupon-time">有效期至：{{item.endTime}}</text>
+    </view>
+    <button 
+      class="coupon-btn {{item.received ? 'coupon-btn-disabled' : ''}}"
+      bindtap="receiveCoupon"
+      data-id="{{item.id}}"
+      disabled="{{item.received || receiving}}"
+    >
+      {{item.received ? '已领取' : (receiving ? '领取中...' : '立即领取')}}
+    </button>
+  </view>
+</view>

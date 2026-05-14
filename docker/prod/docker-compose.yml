@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: bakery-mysql-prod
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: Asia/Shanghai
+    volumes:
+      - ../mysql/data-prod:/var/lib/mysql
+      - ../mysql/conf.d:/etc/mysql/conf.d
+    restart: always
+    networks:
+      - bakery-prod
+    command: ["--default-authentication-plugin=mysql_native_password"]
+
+  api:
+    container_name: bakery-api-prod
+    build:
+      context: ../..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8150:8150"
+    environment:
+      DB_HOST: bakery-mysql-prod
+      DB_PORT: 3306
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      WX_APPID: ${WX_APPID}
+      WX_SECRET: ${WX_SECRET}
+      TZ: Asia/Shanghai
+      NODE_ENV: production
+    depends_on:
+      - mysql
+    restart: always
+    networks:
+      - bakery-prod
+
+  nginx:
+    container_name: bakery-nginx-prod
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../logs:/var/log/nginx
+      - ../ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - api
+    restart: always
+    networks:
+      - bakery-prod
+
+networks:
+  bakery-prod:
+    driver: bridge

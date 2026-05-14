@@ -1,0 +1,128 @@
+<!-- 加载状态 -->
+<view wx:if="{{loading}}" class="loading-container">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>
+
+<!-- 错误状态 -->
+<view wx:elif="{{error}}" class="error-container">
+  <text class="error-text">{{error}}</text>
+  <button class="retry-button" bindtap="loadOrderDetail">重新加载</button>
+</view>
+
+<!-- 空状态 -->
+<view wx:elif="{{!orderDetail}}" class="empty-container">
+  <text class="empty-text">订单不存在</text>
+  <button class="back-button" bindtap="navigateToOrderList">返回订单列表</button>
+</view>
+
+<!-- 订单详情 -->
+<view wx:else class="order-detail-container">
+  <!-- 订单头部 -->
+  <view class="order-header">
+    <view class="order-status">
+      <text class="status-text">{{orderDetail.statusText}}</text>
+    </view>
+    <view class="order-info">
+      <text class="order-no">订单号：{{orderDetail.orderNo}}</text>
+      <text class="order-time">创建时间：{{formatTime(orderDetail.createTime)}}</text>
+    </view>
+  </view>
+
+  <!-- 商品列表 -->
+  <view class="product-list">
+    <view wx:for="{{orderDetail.items}}" wx:key="index" class="product-item">
+      <image class="product-image" src="{{item.productImage}}" mode="aspectFill"></image>
+      <view class="product-info">
+        <text class="product-name">{{item.productName}}</text>
+        <view class="product-price-quantity">
+          <text class="product-price">¥{{item.price.toFixed(2)}}</text>
+          <text class="product-quantity">x{{item.quantity}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 价格区域 -->
+  <view class="price-section">
+    <view class="price-item">
+      <text class="price-label">商品总额</text>
+      <text class="price-value">¥{{orderDetail.totalAmount.toFixed(2)}}</text>
+    </view>
+    <view class="price-item">
+      <text class="price-label">优惠金额</text>
+      <text class="price-value discount">-¥{{orderDetail.discountAmount.toFixed(2)}}</text>
+    </view>
+    <view class="price-item total">
+      <text class="price-label total-label">实付金额</text>
+      <text class="price-value total-value">¥{{orderDetail.payAmount.toFixed(2)}}</text>
+    </view>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="order-info-section">
+    <view class="info-item">
+      <text class="info-label">支付方式</text>
+      <text class="info-value">{{getPayTypeText(orderDetail.payType)}}</text>
+    </view>
+    <view wx:if="{{orderDetail.remark}}" class="info-item">
+      <text class="info-label">备注</text>
+      <text class="info-value">{{orderDetail.remark}}</text>
+    </view>
+    <view wx:if="{{orderDetail.payTime}}" class="info-item">
+      <text class="info-label">支付时间</text>
+      <text class="info-value">{{formatTime(orderDetail.payTime)}}</text>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <button wx:if="{{orderDetail.status === 0}}" class="cancel-button" bindtap="confirmCancelOrder">取消订单</button>
+    <button class="rebuy-button" bindtap="rebuy">再来一单</button>
+    <button wx:if="{{orderDetail.status === 0}}" class="pay-button" bindtap="showPayModal">立即支付</button>
+  </view>
+</view>
+
+<!-- 支付方式选择弹窗 -->
+<view wx:if="{{showPayModal}}" class="modal-overlay" bindtap="hidePayModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">选择支付方式</text>
+      <text class="modal-close" bindtap="hidePayModal">×</text>
+    </view>
+    <view class="pay-options">
+      <view class="pay-option" bindtap="selectPayType" data-type="wechat">
+        <text class="pay-icon wechat">💚</text>
+        <text class="pay-name">微信支付</text>
+        <view class="radio" wx:if="{{selectedPayType === 'wechat'}}">
+          <view class="radio-inner"></view>
+        </view>
+      </view>
+      <view class="pay-option" bindtap="selectPayType" data-type="balance">
+        <text class="pay-icon balance">💰</text>
+        <text class="pay-name">余额支付</text>
+        <view class="radio" wx:if="{{selectedPayType === 'balance'}}">
+          <view class="radio-inner"></view>
+        </view>
+      </view>
+    </view>
+    <button class="confirm-pay-button" bindtap="payOrder">确认支付</button>
+  </view>
+</view>
+
+<!-- 取消订单确认弹窗 -->
+<view wx:if="{{showCancelModal}}" class="modal-overlay" bindtap="hideCancelModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">确认取消订单</text>
+      <text class="modal-close" bindtap="hideCancelModal">×</text>
+    </view>
+    <view class="modal-body">
+      <text class="modal-message">您确定要取消该订单吗？</text>
+    </view>
+    <view class="modal-footer">
+      <button class="cancel-modal-button" bindtap="hideCancelModal">取消</button>
+      <button class="confirm-modal-button" bindtap="cancelOrder">确认取消</button>
+    </view>
+  </view>
+</view>

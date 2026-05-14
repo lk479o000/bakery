@@ -1,0 +1,68 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/order/order",
+    "pages/order-list/order-list",
+    "pages/user/user",
+    "pages/login/login",
+    "pages/address/address",
+    "pages/order-detail/order-detail",
+    "pages/balance-record/balance-record",
+    "pages/my-coupon/my-coupon",
+    "pages/service/service",
+    "pages/about/about",
+    "pages/address-edit/address-edit",
+    "pages/coupon/coupon",
+    "pages/member-code/member-code",
+    "pages/recharge/recharge",
+    "pages/scan/scan",
+    "pages/store-list/store-list",
+    "pages/agreement/agreement",
+    "pages/checkin/checkin",
+    "pages/points-shop/points-shop",
+    "pages/collect-gift/collect-gift",
+    "pages/shareholder/shareholder"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "吉世面包",
+    "navigationBarTextStyle": "black"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于查找附近门店"
+    }
+  },
+  "requiredPrivateInfos": ["getLocation"],
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#4CAF50",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/order/order",
+        "text": "点单"
+      },
+      {
+        "pagePath": "pages/scan/scan",
+        "text": "扫码"
+      },
+      {
+        "pagePath": "pages/order-list/order-list",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}
