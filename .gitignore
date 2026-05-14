@@ -47,3 +47,6 @@ logs/
 # 图片文件
 images-bak/
 images-demo/
+
+
+node_modules/

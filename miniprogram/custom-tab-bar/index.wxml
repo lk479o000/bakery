@@ -10,7 +10,7 @@
     <!-- 中间扫码特殊按钮 -->
     <view wx:if="{{item.isSpecial}}" class="special-btn">
       <view class="special-icon">
-        <image class="scan-icon" style="width: 52rpx; height: 52rpx;" src="/icons/scan.png" mode="aspectFit" />
+        <image class="scan-icon" style="width: 40rpx; height: 40rpx;" src="/icons/scan.png" mode="aspectFit" />
       </view>
     </view>
     <!-- 普通tab按钮 -->
