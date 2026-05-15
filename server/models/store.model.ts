@@ -16,6 +16,7 @@ class Store extends Model {
   declare sort: number;
   declare status: number;
   declare created_at: Date;
+  declare deleted_at: Date | null;
 }
 
 Store.init(
@@ -96,12 +97,21 @@ Store.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: '创建时间'
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: '删除时间（软删除）'
     }
   },
   {
     sequelize,
     tableName: 't_store',
-    timestamps: false
+    timestamps: true,
+    paranoid: true,
+    createdAt: 'created_at',
+    updatedAt: false,
+    deletedAt: 'deleted_at'
   }
 );
 

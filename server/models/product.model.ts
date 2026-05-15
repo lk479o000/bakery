@@ -11,8 +11,12 @@ class Product extends Model {
   declare image: string | null;
   declare stock: number;
   declare status: number;
+  declare can_pickup: number;
+  declare can_delivery: number;
+  declare can_express: number;
   declare sort: number;
   declare created_at: Date;
+  declare deleted_at: Date | null;
 }
 
 Product.init(
@@ -64,6 +68,24 @@ Product.init(
       defaultValue: 1,
       comment: '状态：0-下架，1-上架'
     },
+    can_pickup: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1,
+      comment: '自取可售'
+    },
+    can_delivery: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1,
+      comment: '外卖可售'
+    },
+    can_express: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1,
+      comment: '快递可售'
+    },
     sort: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -75,12 +97,21 @@ Product.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: '创建时间'
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: '删除时间（软删除）'
     }
   },
   {
     sequelize,
     tableName: 't_product',
-    timestamps: false
+    timestamps: true,
+    paranoid: true,
+    createdAt: 'created_at',
+    updatedAt: false,
+    deletedAt: 'deleted_at'
   }
 );
 

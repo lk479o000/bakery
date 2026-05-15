@@ -75,3 +75,5 @@ export const useVbenVxeGrid = <T extends Record<string, any>>(
 ) => useGrid<T, ComponentType, ComponentPropsMap>(...rest);
 
 export type * from '@vben/plugins/vxe-table';
+
+export { useVbenTable } from './use-vben-table';

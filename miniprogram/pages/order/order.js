@@ -68,7 +68,7 @@ Page({
     loadCategoryList() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const categoryList = yield (0, product_1.getCategoryList)();
+                const categoryList = yield (0, product_1.getCategoryList)({ orderType: this.data.orderType });
                 this.setData({ categoryList });
                 return categoryList;
             }
@@ -85,7 +85,7 @@ Page({
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 this.setData({ loading: true });
-                const { list } = yield (0, product_1.getProductList)({ categoryId, page: 1, pageSize: 20 });
+                const { list } = yield (0, product_1.getProductList)({ categoryId, page: 1, pageSize: 20, orderType: this.data.orderType });
                 // 合并购物车数量
                 const productList = this.mergeCartQuantity(list);
                 this.setData({ productList, loading: false });
@@ -166,9 +166,22 @@ Page({
      * 订单类型切换
      */
     onOrderTypeChange(e) {
-        const type = e.currentTarget.dataset.type;
-        this.setData({ orderType: type });
-        wx.setStorageSync('orderType', type);
+        return __awaiter(this, void 0, void 0, function* () {
+            const type = e.currentTarget.dataset.type;
+            this.setData({ orderType: type });
+            wx.setStorageSync('orderType', type);
+            const categoryList = yield this.loadCategoryList();
+            if (categoryList.length === 0) {
+                this.setData({ currentCategoryId: '', productList: [] });
+                return;
+            }
+            let nextId = this.data.currentCategoryId;
+            if (!categoryList.some((c) => c.id === nextId)) {
+                nextId = categoryList[0].id;
+                this.setData({ currentCategoryId: nextId });
+            }
+            yield this.loadProductList(nextId);
+        });
     },
     /**
      * 加入购物车
@@ -194,7 +207,7 @@ Page({
                 }
                 else {
                     // 不存在，添加
-                    yield (0, cart_1.addToCart)(productId, 1);
+                    yield (0, cart_1.addToCart)(productId, 1, this.data.orderType);
                 }
                 // 刷新购物车
                 yield this.loadCartList();

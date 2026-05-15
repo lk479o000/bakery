@@ -9,6 +9,8 @@ import {
 } from '@vben/locales';
 import { preferences } from '@vben/preferences';
 
+import dayjs from 'dayjs';
+
 const modules = import.meta.glob('./langs/**/*.json');
 
 const localesMap = loadLocalesMapFromDir(
@@ -16,13 +18,38 @@ const localesMap = loadLocalesMapFromDir(
   modules,
 );
 
+async function loadDayjsLocale(lang: SupportedLanguagesType) {
+  let locale;
+  switch (lang) {
+    case 'en-US': {
+      locale = await import('dayjs/locale/en');
+      break;
+    }
+    case 'zh-CN': {
+      locale = await import('dayjs/locale/zh-cn');
+      break;
+    }
+    default: {
+      locale = await import('dayjs/locale/en');
+    }
+  }
+  if (locale) {
+    dayjs.locale(locale);
+  } else {
+    console.error(`Failed to load dayjs locale for ${lang}`);
+  }
+}
+
 /**
  * 加载应用特有的语言包
  * 这里也可以改造为从服务端获取翻译数据
  * @param lang
  */
 async function loadMessages(lang: SupportedLanguagesType) {
-  const appLocaleMessages = await localesMap[lang]?.();
+  const [appLocaleMessages] = await Promise.all([
+    localesMap[lang]?.(),
+    loadDayjsLocale(lang),
+  ]);
   return appLocaleMessages?.default;
 }
 

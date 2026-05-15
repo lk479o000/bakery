@@ -12,6 +12,7 @@ class Coupon extends Model {
   declare total_count: number;
   declare received_count: number;
   declare status: number;
+  declare deleted_at: Date | null;
 }
 
 Coupon.init(
@@ -69,12 +70,21 @@ Coupon.init(
       allowNull: false,
       defaultValue: 1,
       comment: '状态：0-禁用，1-启用'
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: '删除时间（软删除）'
     }
   },
   {
     sequelize,
     tableName: 't_coupon',
-    timestamps: false
+    timestamps: true,
+    paranoid: true,
+    createdAt: false,
+    updatedAt: false,
+    deletedAt: 'deleted_at'
   }
 );
 

@@ -60,6 +60,9 @@ export interface Category {
   name: string;
   icon: string;
   sort: number;
+  can_pickup?: number;
+  can_delivery?: number;
+  can_express?: number;
 }
 
 // 商品
@@ -72,6 +75,9 @@ export interface Product {
   image: string;
   stock: number;
   categoryId?: string;
+  can_pickup?: number;
+  can_delivery?: number;
+  can_express?: number;
 }
 
 // 商品列表响应

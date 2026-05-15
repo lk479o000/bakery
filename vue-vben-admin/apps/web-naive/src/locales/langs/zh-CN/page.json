@@ -4,25 +4,6 @@
     "analytics": "数据分析",
     "workspace": "工作区"
   },
-  "demos": {
-    "vben": {
-      "title": "Vben Admin",
-      "document": "文档",
-      "antdv": "Ant Design Vue",
-      "antdv-next": "Ant Design Vue Next",
-      "element-plus": "Element Plus"
-    },
-    "form": {
-      "basic": "基础表单",
-      "modal": "弹窗表单"
-    },
-    "naive": {
-      "title": "Naive UI"
-    },
-    "table": {
-      "title": "表格"
-    }
-  },
   "bakery": {
     "title": "面包店管理",
     "product": "商品管理",

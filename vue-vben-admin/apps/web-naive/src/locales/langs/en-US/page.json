@@ -1,4 +1,20 @@
 {
+  "dashboard": {
+    "title": "Dashboard",
+    "analytics": "Analytics",
+    "workspace": "Workspace"
+  },
+  "bakery": {
+    "title": "Bakery Management",
+    "product": "Product Management",
+    "category": "Category Management",
+    "order": "Order Management",
+    "user": "User Management",
+    "coupon": "Coupon Management",
+    "store": "Store Management",
+    "recharge": "Recharge Package",
+    "banner": "Banner Management"
+  },
   "auth": {
     "login": "Login",
     "register": "Register",
@@ -6,10 +22,5 @@
     "qrcodeLogin": "Qr Code Login",
     "forgetPassword": "Forget Password",
     "profile": "Profile"
-  },
-  "dashboard": {
-    "title": "Dashboard",
-    "analytics": "Analytics",
-    "workspace": "Workspace"
   }
 }

@@ -14,6 +14,7 @@ class Order extends Model {
   declare remark: string | null;
   declare create_time: Date;
   declare pay_time: Date | null;
+  declare deleted_at: Date | null;
 }
 
 Order.init(
@@ -82,12 +83,21 @@ Order.init(
       type: DataTypes.DATE,
       allowNull: true,
       comment: '支付时间'
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: '删除时间（软删除）'
     }
   },
   {
     sequelize,
     tableName: 't_order',
-    timestamps: false
+    timestamps: true,
+    paranoid: true,
+    createdAt: 'create_time',
+    updatedAt: false,
+    deletedAt: 'deleted_at'
   }
 );
 

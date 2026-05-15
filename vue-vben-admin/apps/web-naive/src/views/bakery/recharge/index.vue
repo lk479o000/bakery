@@ -9,64 +9,14 @@ import { getRechargePackageListApi, createRechargePackageApi, updateRechargePack
 
 const message = useMessage();
 
-const [table, tableAction] = useVbenTable({
-  api: getRechargePackageListApi,
-  columns: [
-    { field: 'name', title: '套餐名称', width: 150 },
-    { field: 'amount', title: '充值金额', width: 120, formatter: (val: number) => `¥${val.toFixed(2)}` },
-    { field: 'giftAmount', title: '赠送金额', width: 120, formatter: (val: number) => `¥${val.toFixed(2)}` },
-    {
-      field: 'isRecommended',
-      title: '推荐',
-      width: 80,
-      formatter: (val: number) => {
-        return val === 1 ? '<span class="px-2 py-1 rounded text-sm bg-green-100 text-green-800">是</span>' : '否';
-      },
-    },
-    { field: 'description', title: '描述', width: 200 },
-    { field: 'sort', title: '排序', width: 80 },
-    {
-      field: 'status',
-      title: '状态',
-      width: 80,
-      formatter: (val: number) => {
-        return val === 1 ? '<span class="px-2 py-1 rounded text-sm bg-green-100 text-green-800">启用</span>' : '<span class="px-2 py-1 rounded text-sm bg-red-100 text-red-800">禁用</span>';
-      },
-    },
-    { field: 'action', title: '操作', width: 180, fixed: 'right' },
-  ],
-  toolBarSchema: [
-    { component: 'NButton', componentProps: { type: 'primary', onClick: () => modalApi.open() }, children: '新增套餐' },
-  ],
-  actionColumn: {
-    width: 180,
-    buttons: [
-      { text: '编辑', onClick: (row) => modalApi.open({ data: row }) },
-      { text: '删除', onClick: handleDelete, type: 'danger' },
-    ],
-  },
-});
-
-async function handleDelete(row: RechargeApi.RechargePackage) {
-  if (await tableAction.confirm(`确定删除充值套餐「${row.name}」吗？`)) {
-    await deleteRechargePackageApi(row.id);
-    message.success('删除成功');
-    tableAction.refresh();
-  }
-}
-
-const [Modal, modalApi] = useVbenModal({
-  title: '充值套餐管理',
-  bodyStyle: { maxHeight: 'calc(100vh - 200px)', overflow: 'auto' },
-});
-
 const [Form, formApi] = useVbenForm({
   layout: 'vertical',
   wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
   handleSubmit: async (values) => {
     const data = values as RechargeApi.CreateRechargePackageParams;
-    if (modalApi.getCurrentData()?.id) {
-      await updateRechargePackageApi({ ...data, id: modalApi.getCurrentData().id });
+    const current = modalApi.getData<RechargeApi.RechargePackage>();
+    if (current?.id) {
+      await updateRechargePackageApi({ ...data, id: current.id });
       message.success('更新成功');
     } else {
       await createRechargePackageApi(data);
@@ -98,19 +48,70 @@ const [Form, formApi] = useVbenForm({
   ],
 });
 
-modalApi?.onOpen?.((data) => {
-  if (data?.id) {
-    formApi.setValues(data);
-  } else {
-    formApi.reset();
-  }
+const [Modal, modalApi] = useVbenModal({
+  title: '充值套餐管理',
+  contentClass: 'max-h-[calc(100vh-200px)] overflow-auto',
+  async onOpenChange(isOpen) {
+    if (!isOpen) return;
+    const data = modalApi.getData<RechargeApi.RechargePackage>();
+    await formApi.resetForm();
+    if (data?.id) {
+      formApi.setValues(data);
+    }
+  },
 });
+
+const [Grid, tableAction] = useVbenTable({
+  api: getRechargePackageListApi,
+  columns: [
+    { field: 'name', title: '套餐名称', width: 150 },
+    { field: 'amount', title: '充值金额', width: 120, formatter: (val: number) => `¥${val.toFixed(2)}` },
+    { field: 'giftAmount', title: '赠送金额', width: 120, formatter: (val: number) => `¥${val.toFixed(2)}` },
+    {
+      field: 'isRecommended',
+      title: '推荐',
+      width: 80,
+      formatter: (val: number) => {
+        return val === 1 ? '<span class="px-2 py-1 rounded text-sm bg-green-100 text-green-800">是</span>' : '否';
+      },
+    },
+    { field: 'description', title: '描述', width: 200 },
+    { field: 'sort', title: '排序', width: 80 },
+    {
+      field: 'status',
+      title: '状态',
+      width: 80,
+      formatter: (val: number) => {
+        return val === 1 ? '<span class="px-2 py-1 rounded text-sm bg-green-100 text-green-800">启用</span>' : '<span class="px-2 py-1 rounded text-sm bg-red-100 text-red-800">禁用</span>';
+      },
+    },
+    { field: 'action', title: '操作', width: 180, fixed: 'right' },
+  ],
+  toolBarSchema: [
+    { component: 'NButton', componentProps: { type: 'primary', onClick: () => modalApi.setData({}).open() }, children: '新增套餐' },
+  ],
+  actionColumn: {
+    width: 180,
+    buttons: [
+      { text: '编辑', onClick: (row) => modalApi.setData(row).open() },
+      { text: '删除', onClick: handleDelete, type: 'danger' },
+    ],
+  },
+});
+
+async function handleDelete(row: RechargeApi.RechargePackage) {
+  if (await tableAction.confirm(`确定删除充值套餐「${row.name}」吗？`)) {
+    await deleteRechargePackageApi(row.id);
+    message.success('删除成功');
+    tableAction.refresh();
+  }
+}
 </script>
 
 <template>
   <Page title="充值套餐管理" description="管理充值套餐信息">
     <NCard>
-      <table />
+      <Grid />
     </NCard>
     <Modal>
       <Form />

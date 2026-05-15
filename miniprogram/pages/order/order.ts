@@ -58,7 +58,7 @@ Page({
     try {
       // 读取保存的订单类型
       const savedType = wx.getStorageSync('orderType') || 'pickup';
-      this.setData({ orderType: savedType as 'pickup' | 'delivery' });
+      this.setData({ orderType: savedType as 'pickup' | 'delivery' | 'express' });
 
       // 并行加载分类和购物车
       const [categoryList] = await Promise.all([
@@ -81,7 +81,7 @@ Page({
    */
   async loadCategoryList() {
     try {
-      const categoryList = await getCategoryList();
+      const categoryList = await getCategoryList({ orderType: this.data.orderType });
       this.setData({ categoryList });
       return categoryList;
     } catch (error) {
@@ -96,7 +96,12 @@ Page({
   async loadProductList(categoryId: string) {
     try {
       this.setData({ loading: true });
-      const { list } = await getProductList({ categoryId, page: 1, pageSize: 20 });
+      const { list } = await getProductList({
+        categoryId,
+        page: 1,
+        pageSize: 20,
+        orderType: this.data.orderType,
+      });
       
       // 合并购物车数量
       const productList = this.mergeCartQuantity(list);
@@ -195,10 +200,22 @@ Page({
   /**
    * 订单类型切换
    */
-  onOrderTypeChange(e: WechatMiniprogram.TouchEvent) {
+  async onOrderTypeChange(e: WechatMiniprogram.TouchEvent) {
     const type = e.currentTarget.dataset.type as 'pickup' | 'delivery' | 'express';
     this.setData({ orderType: type });
     wx.setStorageSync('orderType', type);
+
+    const categoryList = await this.loadCategoryList();
+    if (categoryList.length === 0) {
+      this.setData({ currentCategoryId: '', productList: [] });
+      return;
+    }
+    let nextId = this.data.currentCategoryId;
+    if (!categoryList.some((c) => c.id === nextId)) {
+      nextId = categoryList[0].id;
+      this.setData({ currentCategoryId: nextId });
+    }
+    await this.loadProductList(nextId);
   },
 
   /**
@@ -226,7 +243,7 @@ Page({
         await updateCartItem(existingItem.id, existingItem.quantity + 1);
       } else {
         // 不存在，添加
-        await addToCart(productId, 1);
+        await addToCart(productId, 1, this.data.orderType);
       }
 
       // 刷新购物车

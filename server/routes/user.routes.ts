@@ -1,8 +1,12 @@
 import express from 'express';
 import userController from '../controllers/user.controller';
 import { authMiddleware } from '../middleware/auth.middleware';
+import { authenticateAdmin } from '../middleware/admin-auth.middleware';
 
 const router = express.Router();
+
+// 后台：用户分页列表（须管理员 Token）
+router.get('/list', authenticateAdmin, userController.getUserListForAdmin);
 
 // 获取用户信息（需要认证）
 router.get('/info', authMiddleware, userController.getUserInfo);

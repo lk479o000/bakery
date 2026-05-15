@@ -16,7 +16,6 @@ import {
 } from '@vben/icons';
 
 import { IFrameView } from '#/layouts';
-import { $t } from '#/locales';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -24,7 +23,7 @@ const routes: RouteRecordRaw[] = [
       badgeType: 'dot',
       icon: VBEN_LOGO_URL,
       order: 9998,
-      title: $t('demos.vben.title'),
+      title: 'demos.vben.title',
     },
     name: 'VbenProject',
     path: '/vben-admin',
@@ -36,7 +35,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           icon: 'lucide:book-open-text',
           link: VBEN_DOC_URL,
-          title: $t('demos.vben.document'),
+          title: 'demos.vben.document',
         },
       },
       {
@@ -57,7 +56,7 @@ const routes: RouteRecordRaw[] = [
           badgeType: 'dot',
           icon: SvgAntdvLogoIcon,
           link: VBEN_ANT_PREVIEW_URL,
-          title: $t('demos.vben.antdv'),
+          title: 'demos.vben.antdv',
         },
       },
       {
@@ -68,7 +67,7 @@ const routes: RouteRecordRaw[] = [
           badgeType: 'dot',
           icon: SvgAntdvNextLogoIcon,
           link: VBEN_ANTDV_NEXT_PREVIEW_URL,
-          title: $t('demos.vben.antdv-next'),
+          title: 'demos.vben.antdv-next',
         },
       },
       {
@@ -79,7 +78,7 @@ const routes: RouteRecordRaw[] = [
           badgeType: 'dot',
           icon: SvgTDesignIcon,
           link: VBEN_TD_PREVIEW_URL,
-          title: $t('demos.vben.tdesign'),
+          title: 'demos.vben.tdesign',
         },
       },
       {
@@ -90,7 +89,7 @@ const routes: RouteRecordRaw[] = [
           badgeType: 'dot',
           icon: 'logos:element',
           link: VBEN_ELE_PREVIEW_URL,
-          title: $t('demos.vben.element-plus'),
+          title: 'demos.vben.element-plus',
         },
       },
     ],
@@ -101,7 +100,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('#/views/_core/about/index.vue'),
     meta: {
       icon: 'lucide:copyright',
-      title: $t('demos.vben.about'),
+      title: 'demos.vben.about',
       order: 9999,
     },
   },
@@ -112,7 +111,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'lucide:user',
       hideInMenu: true,
-      title: $t('page.auth.profile'),
+      title: 'page.auth.profile',
     },
   },
 ];

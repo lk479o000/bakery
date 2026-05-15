@@ -4,6 +4,7 @@
 
 import { get, post, put, del } from '../utils/request';
 import { CartItem } from '../types/api';
+import type { OrderTypeParam } from './product';
 
 /**
  * 获取购物车列表
@@ -17,15 +18,20 @@ export function getCartList(): Promise<CartItem[]> {
  * 添加商品到购物车
  * @param productId 商品ID
  * @param quantity 数量
- * @returns Promise<{ id: string; productId: string; quantity: number }>
+ * @param orderType 当前下单方式，传入时后端校验商品是否支持该渠道
  */
 export function addToCart(
   productId: string,
-  quantity = 1
+  quantity = 1,
+  orderType?: OrderTypeParam
 ): Promise<{ id: string; productId: string; quantity: number }> {
+  const body: Record<string, unknown> = { productId, quantity };
+  if (orderType) {
+    body.order_type = orderType;
+  }
   return post<{ id: string; productId: string; quantity: number }>(
     '/api/cart/add',
-    { productId, quantity }
+    body
   );
 }
 

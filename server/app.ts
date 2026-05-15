@@ -40,6 +40,7 @@ import storeRoutes from './routes/store.routes';
 import rechargePackageRoutes from './routes/recharge-package.routes';
 import paymentRoutes from './routes/payment.routes';
 import adminAuthRoutes from './routes/admin-auth.routes';
+import uploadRoutes from './routes/upload.routes';
 
 // 创建 Express 应用
 const app = express();
@@ -62,11 +63,11 @@ app.use('/api', adminAuthRoutes);
 
 // 小程序路由
 app.use('/api/auth', authRoutes);
-app.use('/api/user', authMiddleware, userRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/product', productRoutes);
-app.use('/api/order', authMiddleware, orderRoutes);
+app.use('/api/order', orderRoutes);
 app.use('/api/cart', authMiddleware, cartRoutes);
-app.use('/api/coupon', authMiddleware, couponRoutes);
+app.use('/api/coupon', couponRoutes);
 app.use('/api/address', authMiddleware, addressRoutes);
 app.use('/api/balance', authMiddleware, balanceRoutes);
 app.use('/api/banner', bannerRoutes);
@@ -74,6 +75,9 @@ app.use('/api/category', categoryRoutes);
 app.use('/api/store', storeRoutes);
 app.use('/api/recharge-package', rechargePackageRoutes);
 app.use('/api/payment', authMiddleware, paymentRoutes);
+
+// 文件上传路由
+app.use('/api/upload', uploadRoutes);
 
 // 404 错误处理
 app.use((req, res) => {

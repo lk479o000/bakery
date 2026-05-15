@@ -12,6 +12,7 @@ class Address extends Model {
   declare detail: string;
   declare is_default: number;
   declare created_at: Date;
+  declare deleted_at: Date | null;
 }
 
 Address.init(
@@ -67,12 +68,21 @@ Address.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
       comment: '创建时间'
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: '删除时间（软删除）'
     }
   },
   {
     sequelize,
     tableName: 't_address',
-    timestamps: false,
+    timestamps: true,
+    paranoid: true,
+    createdAt: 'created_at',
+    updatedAt: false,
+    deletedAt: 'deleted_at',
     indexes: [
       {
         fields: ['user_id'],

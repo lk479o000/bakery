@@ -20,10 +20,14 @@ function getCartList() {
  * 添加商品到购物车
  * @param productId 商品ID
  * @param quantity 数量
- * @returns Promise<{ id: string; productId: string; quantity: number }>
+ * @param orderType 当前下单方式（可选）
  */
-function addToCart(productId, quantity = 1) {
-    return (0, request_1.post)('/api/cart/add', { productId, quantity });
+function addToCart(productId, quantity = 1, orderType) {
+    const body = { productId, quantity };
+    if (orderType) {
+        body.order_type = orderType;
+    }
+    return (0, request_1.post)('/api/cart/add', body);
 }
 /**
  * 更新购物车商品数量

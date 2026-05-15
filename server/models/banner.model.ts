@@ -7,6 +7,7 @@ class Banner extends Model {
   declare link: string;
   declare sort: number;
   declare status: number;
+  declare deleted_at: Date | null;
 }
 
 Banner.init(
@@ -37,12 +38,21 @@ Banner.init(
       allowNull: false,
       defaultValue: 1,
       comment: '状态：0-禁用，1-启用'
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: '删除时间（软删除）'
     }
   },
   {
     sequelize,
     tableName: 't_banner',
-    timestamps: false
+    timestamps: true,
+    paranoid: true,
+    createdAt: false,
+    updatedAt: false,
+    deletedAt: 'deleted_at'
   }
 );
 

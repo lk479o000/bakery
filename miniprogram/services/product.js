@@ -8,6 +8,12 @@ exports.getCategoryList = getCategoryList;
 exports.getProductList = getProductList;
 exports.getProductDetail = getProductDetail;
 const request_1 = require("../utils/request");
+function buildOrderQuery(orderType) {
+    if (!orderType) {
+        return {};
+    }
+    return { order_type: orderType };
+}
 /**
  * 获取轮播图列表
  * @returns Promise<Banner[]>
@@ -17,18 +23,25 @@ function getBannerList() {
 }
 /**
  * 获取商品分类列表
- * @returns Promise<Category[]>
  */
-function getCategoryList() {
-    return (0, request_1.get)('/api/category/list', {}, false);
+function getCategoryList(params) {
+    return (0, request_1.get)('/api/category/list', buildOrderQuery(params === null || params === void 0 ? void 0 : params.orderType), false);
 }
 /**
  * 获取商品列表
- * @param params 查询参数
- * @returns Promise<ProductListResponse>
  */
 function getProductList(params) {
-    return (0, request_1.get)('/api/product/list', params, false);
+    const q = Object.assign(Object.assign({}, buildOrderQuery(params === null || params === void 0 ? void 0 : params.orderType)), {});
+    if (params === null || params === void 0 ? void 0 : params.categoryId) {
+        q.category_id = params.categoryId;
+    }
+    if ((params === null || params === void 0 ? void 0 : params.page) !== undefined) {
+        q.page = params.page;
+    }
+    if ((params === null || params === void 0 ? void 0 : params.pageSize) !== undefined) {
+        q.pageSize = params.pageSize;
+    }
+    return (0, request_1.get)('/api/product/list', q, false);
 }
 /**
  * 获取商品详情

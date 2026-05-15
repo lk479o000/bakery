@@ -22,7 +22,8 @@ CREATE TABLE t_user (
     balance DECIMAL(10,2) DEFAULT 0.00 COMMENT '账户余额（元）',
     member_level TINYINT DEFAULT 1 COMMENT '会员等级：1-普通会员',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）'
 ) COMMENT='用户表';
 
 -- 收货地址表
@@ -37,6 +38,7 @@ CREATE TABLE t_address (
     detail VARCHAR(255) NOT NULL COMMENT '详细地址',
     is_default TINYINT DEFAULT 0 COMMENT '是否默认地址：0-否，1-是',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）',
     INDEX idx_user_id (user_id) COMMENT '用户ID索引'
 ) COMMENT='收货地址表';
 
@@ -46,7 +48,11 @@ CREATE TABLE t_category (
     name VARCHAR(32) NOT NULL COMMENT '分类名称',
     icon VARCHAR(255) COMMENT '分类图标URL',
     sort INT DEFAULT 0 COMMENT '排序号，越小越靠前',
-    status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用'
+    status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
+    can_pickup TINYINT NOT NULL DEFAULT 1 COMMENT '自取场景可展示',
+    can_delivery TINYINT NOT NULL DEFAULT 1 COMMENT '外卖场景可展示',
+    can_express TINYINT NOT NULL DEFAULT 1 COMMENT '快递场景可展示',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）'
 ) COMMENT='商品分类表';
 
 -- 商品表
@@ -60,8 +66,12 @@ CREATE TABLE t_product (
     image VARCHAR(255) COMMENT '商品主图URL',
     stock INT DEFAULT 0 COMMENT '库存数量',
     status TINYINT DEFAULT 1 COMMENT '状态：0-下架，1-上架',
+    can_pickup TINYINT NOT NULL DEFAULT 1 COMMENT '自取可售',
+    can_delivery TINYINT NOT NULL DEFAULT 1 COMMENT '外卖可售',
+    can_express TINYINT NOT NULL DEFAULT 1 COMMENT '快递可售',
     sort INT DEFAULT 0 COMMENT '排序号，越小越靠前',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）',
     INDEX idx_category_id (category_id) COMMENT '分类ID索引'
 ) COMMENT='商品表';
 
@@ -91,6 +101,7 @@ CREATE TABLE t_order (
     remark VARCHAR(255) COMMENT '订单备注',
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     pay_time TIMESTAMP NULL COMMENT '支付时间',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）',
     INDEX idx_user_id (user_id) COMMENT '用户ID索引',
     INDEX idx_order_no (order_no) COMMENT '订单编号索引'
 ) COMMENT='订单表';
@@ -118,7 +129,8 @@ CREATE TABLE t_coupon (
     end_time TIMESTAMP NOT NULL COMMENT '结束时间',
     total_count INT DEFAULT 0 COMMENT '发放总量',
     received_count INT DEFAULT 0 COMMENT '已领取数量',
-    status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用'
+    status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）'
 ) COMMENT='优惠券表';
 
 -- 用户优惠券表
@@ -138,7 +150,8 @@ CREATE TABLE t_banner (
     image VARCHAR(255) NOT NULL COMMENT '轮播图图片URL',
     link VARCHAR(255) COMMENT '跳转链接',
     sort INT DEFAULT 0 COMMENT '排序号，越小越靠前',
-    status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用'
+    status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）'
 ) COMMENT='轮播图表';
 
 -- 余额记录表
@@ -150,6 +163,7 @@ CREATE TABLE t_balance_record (
     balance DECIMAL(10,2) NOT NULL COMMENT '变动后余额（元）',
     remark VARCHAR(255) COMMENT '备注说明',
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）',
     INDEX idx_user_id (user_id) COMMENT '用户ID索引'
 ) COMMENT='余额记录表';
 
@@ -168,7 +182,8 @@ CREATE TABLE t_store (
     can_express TINYINT DEFAULT 0 COMMENT '可快递',
     sort INT DEFAULT 0 COMMENT '排序',
     status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）'
 ) COMMENT='门店表';
 
 -- 充值套餐表
@@ -181,7 +196,8 @@ CREATE TABLE t_recharge_package (
     description VARCHAR(255) COMMENT '活动描述',
     sort INT DEFAULT 0 COMMENT '排序',
     status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）'
 ) COMMENT='充值套餐表';
 
 -- 角色表
@@ -207,7 +223,8 @@ CREATE TABLE t_admin (
     status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
     last_login_time TIMESTAMP NULL COMMENT '最后登录时间',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    deleted_at TIMESTAMP NULL COMMENT '删除时间（软删除）'
 ) COMMENT='管理员表';
 
 -- 管理员角色关联表

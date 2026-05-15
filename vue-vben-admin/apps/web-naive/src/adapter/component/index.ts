@@ -84,10 +84,40 @@ const NUpload = defineAsyncComponent(() =>
   import('naive-ui/es/upload').then((res) => res.NUpload),
 );
 
+/** Vben Form 通过 Slot 把 id/aria 绑到控件根上；Naive 的 NInput/NSelect 等需写入 inputProps 才会落到真实可标注元素上，否则 DevTools 会报 label[for] 无匹配。NDatePicker/NTimePicker 在 naive 2.x 未向外暴露 inner inputProps，无法在适配层把 id 传到内部 NInput。 */
+const LABELABLE_ATTR_KEYS = [
+  'id',
+  'name',
+  'aria-describedby',
+  'aria-labelledby',
+  'aria-invalid',
+] as const;
+
+function hoistLabelableAttrsToInputProps(
+  binds: Recordable<any>,
+): Recordable<any> {
+  const next: Recordable<any> = { ...binds };
+  const existing = (next.inputProps as Recordable<any> | undefined) ?? {};
+  const inputProps: Recordable<any> = { ...existing };
+  let moved = false;
+  for (const key of LABELABLE_ATTR_KEYS) {
+    if (next[key] !== undefined && inputProps[key] === undefined) {
+      inputProps[key] = next[key];
+      delete next[key];
+      moved = true;
+    }
+  }
+  if (moved || Object.keys(inputProps).length > 0) {
+    next.inputProps = inputProps;
+  }
+  return next;
+}
+
 const withDefaultPlaceholder = <T extends Component>(
   component: T,
   type: 'input' | 'select',
   componentProps: Recordable<any> = {},
+  hoistLabelableToInputProps = false,
 ) => {
   return defineComponent({
     name: component.name,
@@ -108,12 +138,19 @@ const withDefaultPlaceholder = <T extends Component>(
           },
         ),
       );
-      return () =>
-        h(
-          component,
-          { ...componentProps, placeholder, ...props, ...attrs, ref: innerRef },
-          slots,
-        );
+      return () => {
+        let merged: Recordable<any> = {
+          ...componentProps,
+          placeholder,
+          ...props,
+          ...attrs,
+          ref: innerRef,
+        };
+        if (hoistLabelableToInputProps) {
+          merged = hoistLabelableAttrsToInputProps(merged);
+        }
+        return h(component, merged, slots);
+      };
     },
   });
 };
@@ -176,6 +213,7 @@ async function initComponentAdapter() {
         component: NSelect,
         modelPropName: 'value',
       },
+      true,
     ),
     ApiTreeSelect: withDefaultPlaceholder(
       {
@@ -192,6 +230,7 @@ async function initComponentAdapter() {
         optionsPropName: 'options',
         visibleEvent: 'onVisibleChange',
       },
+      true,
     ),
     Checkbox: NCheckbox,
     CheckboxGroup: (props, { attrs, slots }) => {
@@ -220,12 +259,17 @@ async function initComponentAdapter() {
       return h(NButton, { ...props, attrs, type: 'primary' }, slots);
     },
     Divider: NDivider,
-    IconPicker: withDefaultPlaceholder(IconPicker, 'select', {
-      iconSlot: 'suffix',
-      inputComponent: NInput,
-    }),
-    Input: withDefaultPlaceholder(NInput, 'input'),
-    InputNumber: withDefaultPlaceholder(NInputNumber, 'input'),
+    IconPicker: withDefaultPlaceholder(
+      IconPicker,
+      'select',
+      {
+        iconSlot: 'suffix',
+        inputComponent: NInput,
+      },
+      true,
+    ),
+    Input: withDefaultPlaceholder(NInput, 'input', {}, true),
+    InputNumber: withDefaultPlaceholder(NInputNumber, 'input', {}, true),
     RadioGroup: (props, { attrs, slots }) => {
       let defaultSlot;
       if (Reflect.has(slots, 'default')) {
@@ -248,11 +292,11 @@ async function initComponentAdapter() {
         ? h(NSpace, { vertical: true }, () => groupRender)
         : groupRender;
     },
-    Select: withDefaultPlaceholder(NSelect, 'select'),
+    Select: withDefaultPlaceholder(NSelect, 'select', {}, true),
     Space: NSpace,
     Switch: NSwitch,
     TimePicker: NTimePicker,
-    TreeSelect: withDefaultPlaceholder(NTreeSelect, 'select'),
+    TreeSelect: withDefaultPlaceholder(NTreeSelect, 'select', {}, true),
     Upload: NUpload,
   };
 

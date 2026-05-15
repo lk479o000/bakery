@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import productService from '../services/product.service';
+import { parseOrderType } from '../utils/order-type';
 
 class ProductController {
   /**
@@ -9,12 +10,15 @@ class ProductController {
    */
   async getProductList(req: Request, res: Response) {
     try {
-      const { category_id, page, pageSize } = req.query;
+      const { category_id, categoryId, page, pageSize, order_type, orderType } = req.query;
+      const cid = (category_id ?? categoryId) as string | undefined;
+      const order_type_parsed = parseOrderType(order_type ?? orderType);
 
       const result = await productService.getProductList({
-        category_id: category_id as string,
-        page: page ? parseInt(page as string) : 1,
-        pageSize: pageSize ? parseInt(pageSize as string) : 20
+        category_id: cid,
+        page: page ? parseInt(page as string, 10) : 1,
+        pageSize: pageSize ? parseInt(pageSize as string, 10) : 20,
+        order_type: order_type_parsed
       });
 
       res.json({ code: 200, message: 'ok', data: result });
@@ -54,7 +58,8 @@ class ProductController {
         return;
       }
 
-      const result = await productService.getProductsByIds(productIds);
+      const order_type = parseOrderType(req.body.order_type ?? req.body.orderType);
+      const result = await productService.getProductsByIds(productIds, order_type);
 
       res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {

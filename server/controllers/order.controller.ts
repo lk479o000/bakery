@@ -72,16 +72,33 @@ class OrderController {
    */
   async getOrderList(req: Request, res: Response) {
     try {
-      const { userId } = req;
-      const { status, page, pageSize } = req.query;
+      const { status, page, pageSize, type, orderNo } = req.query;
 
-      const result = await orderService.getOrderList(userId!, {
-        status: status ? parseInt(status as string) : undefined,
-        page: page ? parseInt(page as string) : 1,
-        pageSize: pageSize ? parseInt(pageSize as string) : 20
-      });
+      const parsed = {
+        status: status !== undefined && status !== '' ? parseInt(status as string, 10) : undefined,
+        page: page ? parseInt(page as string, 10) : 1,
+        pageSize: pageSize ? parseInt(pageSize as string, 10) : 20,
+        type: type as string | undefined,
+        orderNo: orderNo as string | undefined,
+      };
 
-      res.json({ code: 200, message: 'ok', data: result });
+      if (req.adminId) {
+        const result = await orderService.listOrdersForAdmin(parsed);
+        res.json({ code: 200, message: 'ok', data: result });
+        return;
+      }
+
+      if (req.userId) {
+        const result = await orderService.getOrderList(req.userId, {
+          status: parsed.status,
+          page: parsed.page,
+          pageSize: parsed.pageSize,
+        });
+        res.json({ code: 200, message: 'ok', data: result });
+        return;
+      }
+
+      res.status(401).json({ code: 401, message: '未登录或登录已过期', data: null });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }

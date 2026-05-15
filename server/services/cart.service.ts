@@ -1,5 +1,6 @@
 import Cart from '../models/cart.model';
 import Product from '../models/product.model';
+import { parseOrderType } from '../utils/order-type';
 
 // 生成唯一ID
 function generateId(): string {
@@ -47,11 +48,23 @@ class CartService {
    * @param quantity 数量
    * @returns 购物车项
    */
-  async addToCart(userId: string, productId: string, quantity: number) {
+  async addToCart(userId: string, productId: string, quantity: number, order_type_raw?: unknown) {
     // 检查商品是否存在
     const product = await Product.findByPk(productId);
     if (!product) {
       throw new Error('商品不存在');
+    }
+
+    const order_type = parseOrderType(order_type_raw);
+    if (order_type) {
+      const flags = {
+        pickup: product.can_pickup,
+        delivery: product.can_delivery,
+        express: product.can_express
+      };
+      if (Number(flags[order_type]) !== 1) {
+        throw new Error('该商品不支持当前下单方式');
+      }
     }
 
     if (product.status !== 1) {

@@ -1,7 +1,11 @@
 import express from 'express';
 import couponController from '../controllers/coupon.controller';
+import { authenticateAdmin } from '../middleware/admin-auth.middleware';
 
 const router = express.Router();
+
+// 后台：优惠券分页列表
+router.get('/list', authenticateAdmin, couponController.getCouponListForAdmin);
 
 // 获取可用优惠券列表（不需要认证）
 router.get('/available', couponController.getAvailableCoupons);

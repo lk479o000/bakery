@@ -18,34 +18,34 @@ INSERT INTO t_admin_role (admin_id, role_id) VALUES
 ('admin_super', 'role_super');
 
 -- 插入商品分类（对齐线上版本）
-INSERT INTO t_category (id, name, icon, sort, status) VALUES
-('cat001', '甜面包', 'https://example.com/icons/sweet-bread.png', 1, 1),
-('cat002', '欧包', 'https://example.com/icons/european-bread.png', 2, 1),
-('cat003', '米面包', 'https://example.com/icons/rice-bread.png', 3, 1),
-('cat004', '甜品', 'https://example.com/icons/dessert.png', 4, 1),
-('cat005', '贝果', 'https://example.com/icons/bagel.png', 5, 1),
-('cat006', '有肉面包', 'https://example.com/icons/meat-bread.png', 6, 1),
-('cat007', '手作饼干', 'https://example.com/icons/cookie.png', 7, 1),
-('cat008', '饮品', 'https://example.com/icons/drink.png', 8, 1);
+INSERT INTO t_category (id, name, icon, sort, status, can_pickup, can_delivery, can_express) VALUES
+('cat001', '甜面包', 'https://example.com/icons/sweet-bread.png', 1, 1, 1, 1, 1),
+('cat002', '欧包', 'https://example.com/icons/european-bread.png', 2, 1, 1, 1, 1),
+('cat003', '米面包', 'https://example.com/icons/rice-bread.png', 3, 1, 1, 1, 1),
+('cat004', '甜品', 'https://example.com/icons/dessert.png', 4, 1, 1, 1, 0),
+('cat005', '贝果', 'https://example.com/icons/bagel.png', 5, 1, 1, 1, 1),
+('cat006', '有肉面包', 'https://example.com/icons/meat-bread.png', 6, 1, 1, 1, 0),
+('cat007', '手作饼干', 'https://example.com/icons/cookie.png', 7, 1, 1, 1, 1),
+('cat008', '饮品', 'https://example.com/icons/drink.png', 8, 1, 1, 1, 1);
 
 -- 插入商品
-INSERT INTO t_product (id, category_id, name, description, price, original_price, image, stock, status, sort) VALUES
-('prod001', 'cat001', '原味吐司', '经典原味吐司，松软可口', 12.00, 15.00, 'https://example.com/images/bread1.jpg', 100, 1, 1),
-('prod002', 'cat001', '全麦面包', '健康全麦面包，富含膳食纤维', 15.00, 18.00, 'https://example.com/images/bread2.jpg', 80, 1, 2),
-('prod003', 'cat001', '红豆吐司', '香甜红豆吐司', 14.00, 16.00, 'https://example.com/images/bread3.jpg', 60, 1, 3),
-('prod004', 'cat002', '法式牛角包', '酥脆法式牛角包', 18.00, 22.00, 'https://example.com/images/croissant.jpg', 50, 1, 1),
-('prod005', 'cat002', '全麦欧包', '外酥里软的全麦欧包', 22.00, 26.00, 'https://example.com/images/european-bread.jpg', 40, 1, 2),
-('prod006', 'cat003', '米面包', '日式米面包，Q弹口感', 16.00, 19.00, 'https://example.com/images/rice-bread.jpg', 45, 1, 1),
-('prod007', 'cat004', '草莓蛋糕', '新鲜草莓蛋糕，口感细腻', 38.00, 45.00, 'https://example.com/images/cake1.jpg', 50, 1, 1),
-('prod008', 'cat004', '巧克力蛋糕', '浓郁巧克力蛋糕，香甜可口', 42.00, 48.00, 'https://example.com/images/cake2.jpg', 40, 1, 2),
-('prod009', 'cat005', '原味贝果', '经典原味贝果', 12.00, 14.00, 'https://example.com/images/bagel.jpg', 60, 1, 1),
-('prod010', 'cat005', '芝士贝果', '香浓芝士贝果', 15.00, 18.00, 'https://example.com/images/cheese-bagel.jpg', 50, 1, 2),
-('prod011', 'cat006', '火腿蛋三明治', '火腿鸡蛋三明治', 20.00, 24.00, 'https://example.com/images/sandwich.jpg', 30, 1, 1),
-('prod012', 'cat006', '培根面包', '培根芝士面包', 18.00, 22.00, 'https://example.com/images/bacon-bread.jpg', 40, 1, 2),
-('prod013', 'cat007', '曲奇饼干', '酥脆曲奇饼干，香甜可口', 25.00, 30.00, 'https://example.com/images/cookie.jpg', 120, 1, 1),
-('prod014', 'cat007', '蔓越莓饼干', '酸甜蔓越莓饼干', 28.00, 32.00, 'https://example.com/images/cranberry-cookie.jpg', 100, 1, 2),
-('prod015', 'cat008', '美式咖啡', '经典美式咖啡，提神醒脑', 18.00, 22.00, 'https://example.com/images/coffee.jpg', 200, 1, 1),
-('prod016', 'cat008', '珍珠奶茶', '香甜珍珠奶茶，口感丰富', 15.00, 18.00, 'https://example.com/images/milk-tea.jpg', 150, 1, 2);
+INSERT INTO t_product (id, category_id, name, description, price, original_price, image, stock, status, can_pickup, can_delivery, can_express, sort) VALUES
+('prod001', 'cat001', '原味吐司', '经典原味吐司，松软可口', 12.00, 15.00, 'https://example.com/images/bread1.jpg', 100, 1, 1, 1, 1, 1),
+('prod002', 'cat001', '全麦面包', '健康全麦面包，富含膳食纤维', 15.00, 18.00, 'https://example.com/images/bread2.jpg', 80, 1, 1, 1, 1, 2),
+('prod003', 'cat001', '红豆吐司', '香甜红豆吐司', 14.00, 16.00, 'https://example.com/images/bread3.jpg', 60, 1, 1, 1, 1, 3),
+('prod004', 'cat002', '法式牛角包', '酥脆法式牛角包', 18.00, 22.00, 'https://example.com/images/croissant.jpg', 50, 1, 1, 1, 0, 1),
+('prod005', 'cat002', '全麦欧包', '外酥里软的全麦欧包', 22.00, 26.00, 'https://example.com/images/european-bread.jpg', 40, 1, 1, 1, 0, 2),
+('prod006', 'cat003', '米面包', '日式米面包，Q弹口感', 16.00, 19.00, 'https://example.com/images/rice-bread.jpg', 45, 1, 1, 1, 1, 1),
+('prod007', 'cat004', '草莓蛋糕', '新鲜草莓蛋糕，口感细腻', 38.00, 45.00, 'https://example.com/images/cake1.jpg', 50, 1, 1, 1, 0, 1),
+('prod008', 'cat004', '巧克力蛋糕', '浓郁巧克力蛋糕，香甜可口', 42.00, 48.00, 'https://example.com/images/cake2.jpg', 40, 1, 1, 1, 0, 2),
+('prod009', 'cat005', '原味贝果', '经典原味贝果', 12.00, 14.00, 'https://example.com/images/bagel.jpg', 60, 1, 1, 1, 1, 1),
+('prod010', 'cat005', '芝士贝果', '香浓芝士贝果', 15.00, 18.00, 'https://example.com/images/cheese-bagel.jpg', 50, 1, 1, 1, 1, 2),
+('prod011', 'cat006', '火腿蛋三明治', '火腿鸡蛋三明治', 20.00, 24.00, 'https://example.com/images/sandwich.jpg', 30, 1, 1, 1, 0, 1),
+('prod012', 'cat006', '培根面包', '培根芝士面包', 18.00, 22.00, 'https://example.com/images/bacon-bread.jpg', 40, 1, 1, 1, 0, 2),
+('prod013', 'cat007', '曲奇饼干', '酥脆曲奇饼干，香甜可口', 25.00, 30.00, 'https://example.com/images/cookie.jpg', 120, 1, 1, 1, 1, 1),
+('prod014', 'cat007', '蔓越莓饼干', '酸甜蔓越莓饼干', 28.00, 32.00, 'https://example.com/images/cranberry-cookie.jpg', 100, 1, 1, 1, 1, 2),
+('prod015', 'cat008', '美式咖啡', '经典美式咖啡，提神醒脑', 18.00, 22.00, 'https://example.com/images/coffee.jpg', 200, 1, 1, 1, 1, 1),
+('prod016', 'cat008', '珍珠奶茶', '香甜珍珠奶茶，口感丰富', 15.00, 18.00, 'https://example.com/images/milk-tea.jpg', 150, 1, 1, 1, 1, 2);
 
 -- 插入优惠券
 INSERT INTO t_coupon (id, name, type, value, min_amount, start_time, end_time, total_count, received_count, status) VALUES

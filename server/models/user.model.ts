@@ -12,6 +12,7 @@ class User extends Model {
   declare member_level: number;
   declare created_at: Date;
   declare updated_at: Date;
+  declare deleted_at: Date | null;
 }
 
 User.init(
@@ -70,14 +71,22 @@ User.init(
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
-      onUpdate: 'NOW()',
       comment: '更新时间'
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: '删除时间（软删除）'
     }
   },
   {
     sequelize,
     tableName: 't_user',
-    timestamps: false
+    timestamps: true,
+    paranoid: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at'
   }
 );
 

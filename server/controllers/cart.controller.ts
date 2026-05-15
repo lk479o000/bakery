@@ -27,7 +27,9 @@ class CartController {
   async addToCart(req: Request, res: Response) {
     try {
       const { userId } = req;
-      const { product_id, quantity } = req.body;
+      const product_id = req.body.product_id ?? req.body.productId;
+      const order_type = req.body.order_type ?? req.body.orderType;
+      const { quantity } = req.body;
 
       if (!product_id) {
         res.status(400).json({ code: 400, message: '商品ID不能为空', data: null });
@@ -39,7 +41,7 @@ class CartController {
         return;
       }
 
-      const result = await cartService.addToCart(userId!, product_id, quantity);
+      const result = await cartService.addToCart(userId!, product_id, quantity, order_type);
 
       res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {

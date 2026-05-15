@@ -13,6 +13,7 @@ class Admin extends Model {
   declare last_login_time: Date | null;
   declare created_at: Date;
   declare updated_at: Date;
+  declare deleted_at: Date | null;
 }
 
 Admin.init(
@@ -74,14 +75,22 @@ Admin.init(
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
-      onUpdate: 'NOW()',
       comment: '更新时间'
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: '删除时间（软删除）'
     }
   },
   {
     sequelize,
     tableName: 't_admin',
-    timestamps: false
+    timestamps: true,
+    paranoid: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at'
   }
 );
 

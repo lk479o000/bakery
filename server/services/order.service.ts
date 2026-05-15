@@ -3,6 +3,7 @@ import OrderItem from '../models/orderItem.model';
 import Product from '../models/product.model';
 import User from '../models/user.model';
 import BalanceRecord from '../models/balance.model';
+import { Op } from 'sequelize';
 
 // 生成唯一ID
 function generateId(): string {
@@ -231,6 +232,112 @@ class OrderService {
       page,
       pageSize
     };
+  }
+
+  /**
+   * 后台管理：订单列表（全部用户），含筛选与前端所需 camelCase 字段
+   */
+  async listOrdersForAdmin(params: {
+    status?: number;
+    page?: number;
+    pageSize?: number;
+    type?: string;
+    orderNo?: string;
+  }) {
+    const { status, page = 1, pageSize = 20, type, orderNo } = params;
+    const offset = (page - 1) * pageSize;
+
+    const where: Record<string, unknown> = {};
+    if (status !== undefined && !Number.isNaN(status)) {
+      where.status = status;
+    }
+    if (type) {
+      where.type = type;
+    }
+    if (orderNo) {
+      where.order_no = { [Op.like]: `%${orderNo}%` };
+    }
+
+    const { rows: orders, count: total } = await Order.findAndCountAll({
+      where,
+      order: [['create_time', 'DESC']],
+      limit: pageSize,
+      offset,
+    });
+
+    const userIds = [...new Set(orders.map((o) => o.user_id))];
+    const users =
+      userIds.length > 0
+        ? await User.findAll({
+            where: { id: { [Op.in]: userIds } },
+            attributes: ['id', 'nickname'],
+          })
+        : [];
+    const nickById = new Map(users.map((u) => [u.id, u.nickname ?? '']));
+
+    const orderIds = orders.map((o) => o.id);
+    const itemsByOrder = new Map<string, InstanceType<typeof OrderItem>[]>();
+    if (orderIds.length > 0) {
+      const items = await OrderItem.findAll({
+        where: { order_id: { [Op.in]: orderIds } },
+      });
+      for (const it of items) {
+        const arr = itemsByOrder.get(it.order_id) ?? [];
+        arr.push(it);
+        itemsByOrder.set(it.order_id, arr);
+      }
+    }
+
+    const typeTextMap: Record<string, string> = {
+      store: '门店订单',
+      recharge: '储值订单',
+      payment: '买单订单',
+      coupon: '券包订单',
+    };
+    const statusTextMap: Record<number, string> = {
+      0: '待支付',
+      1: '已支付',
+      2: '制作中',
+      3: '待取餐',
+      4: '已完成',
+      5: '已取消',
+    };
+
+    const fmt = (d: Date | null | undefined) => {
+      if (!d) return '';
+      const x = new Date(d);
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      return `${x.getFullYear()}-${pad(x.getMonth() + 1)}-${pad(x.getDate())} ${pad(x.getHours())}:${pad(x.getMinutes())}:${pad(x.getSeconds())}`;
+    };
+
+    const list = orders.map((order) => {
+      const items = itemsByOrder.get(order.id) ?? [];
+      return {
+        id: order.id,
+        orderNo: order.order_no,
+        userId: order.user_id,
+        userName: nickById.get(order.user_id) || '-',
+        type: order.type,
+        typeText: typeTextMap[order.type] ?? order.type,
+        status: order.status,
+        statusText: statusTextMap[order.status] ?? String(order.status),
+        totalAmount: Number(order.total_amount),
+        discountAmount: Number(order.discount_amount),
+        payAmount: Number(order.pay_amount),
+        payType: order.pay_type ?? '',
+        remark: order.remark ?? '',
+        createTime: fmt(order.create_time),
+        payTime: order.pay_time ? fmt(order.pay_time) : '',
+        items: items.map((item) => ({
+          productName: item.product_name,
+          productImage: item.product_image ?? '',
+          price: Number(item.price),
+          quantity: item.quantity,
+        })),
+      };
+    });
+
+    return { list, total };
   }
 
   /**

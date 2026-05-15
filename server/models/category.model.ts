@@ -7,6 +7,10 @@ class Category extends Model {
   declare icon: string | null;
   declare sort: number;
   declare status: number;
+  declare can_pickup: number;
+  declare can_delivery: number;
+  declare can_express: number;
+  declare deleted_at: Date | null;
 }
 
 Category.init(
@@ -37,12 +41,39 @@ Category.init(
       allowNull: false,
       defaultValue: 1,
       comment: '状态：0-禁用，1-启用'
+    },
+    can_pickup: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1,
+      comment: '自取场景可展示'
+    },
+    can_delivery: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1,
+      comment: '外卖场景可展示'
+    },
+    can_express: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1,
+      comment: '快递场景可展示'
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: '删除时间（软删除）'
     }
   },
   {
     sequelize,
     tableName: 't_category',
-    timestamps: false
+    timestamps: true,
+    paranoid: true,
+    createdAt: false,
+    updatedAt: false,
+    deletedAt: 'deleted_at'
   }
 );
 

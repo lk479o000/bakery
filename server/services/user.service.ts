@@ -1,4 +1,5 @@
 import User from '../models/user.model';
+import { Op } from 'sequelize';
 
 class UserService {
   /**
@@ -127,6 +128,66 @@ class UserService {
     const hash = userId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const suffix = (hash % 1000).toString().padStart(3, '0');
     return `VIP${timestamp}${suffix}`;
+  }
+
+  /**
+   * 后台管理：用户分页列表
+   */
+  async listUsersForAdmin(params: {
+    nickname?: string;
+    phone?: string;
+    page?: number;
+    pageSize?: number;
+  }) {
+    const { nickname, phone, page = 1, pageSize = 20 } = params;
+    const offset = (page - 1) * pageSize;
+
+    const where: Record<string, unknown> = {};
+    if (nickname) {
+      where.nickname = { [Op.like]: `%${nickname}%` };
+    }
+    if (phone) {
+      where.phone = { [Op.like]: `%${phone}%` };
+    }
+
+    const { rows, count: total } = await User.findAndCountAll({
+      where,
+      order: [['created_at', 'DESC']],
+      limit: pageSize,
+      offset,
+      attributes: [
+        'id',
+        'openid',
+        'nickname',
+        'avatar',
+        'phone',
+        'points',
+        'balance',
+        'member_level',
+        'created_at',
+      ],
+    });
+
+    const fmt = (d: Date) => {
+      const x = new Date(d);
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      return `${x.getFullYear()}-${pad(x.getMonth() + 1)}-${pad(x.getDate())} ${pad(x.getHours())}:${pad(x.getMinutes())}:${pad(x.getSeconds())}`;
+    };
+
+    return {
+      list: rows.map((u) => ({
+        id: u.id,
+        openid: u.openid,
+        nickname: u.nickname ?? '',
+        avatar: u.avatar ?? '',
+        phone: u.phone ?? '',
+        points: u.points,
+        balance: Number(u.balance),
+        memberLevel: u.member_level,
+        createdAt: fmt(u.created_at),
+      })),
+      total,
+    };
   }
 }
 

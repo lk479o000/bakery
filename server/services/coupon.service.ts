@@ -23,7 +23,7 @@ class CouponService {
         total_count: { [Op.gt]: 0 },
         received_count: { [Op.lt]: sequelize.col('total_count') }
       },
-      order: [['sort', 'ASC']]
+      order: [['start_time', 'ASC']]
     });
 
     return coupons.map(coupon => ({
@@ -141,6 +141,48 @@ class CouponService {
     discount = Math.min(discount, amount);
 
     return { discount: parseFloat(discount.toFixed(2)) };
+  }
+
+  /**
+   * 后台管理：优惠券分页列表（camelCase）
+   */
+  async listCouponsForAdmin(params: { status?: number; page?: number; pageSize?: number }) {
+    const { status, page = 1, pageSize = 20 } = params;
+    const offset = (page - 1) * pageSize;
+
+    const where: Record<string, unknown> = {};
+    if (status !== undefined && !Number.isNaN(status)) {
+      where.status = status;
+    }
+
+    const { rows, count: total } = await Coupon.findAndCountAll({
+      where,
+      order: [['start_time', 'DESC']],
+      limit: pageSize,
+      offset,
+    });
+
+    const fmt = (d: Date) => {
+      const x = new Date(d);
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      return `${x.getFullYear()}-${pad(x.getMonth() + 1)}-${pad(x.getDate())} ${pad(x.getHours())}:${pad(x.getMinutes())}:${pad(x.getSeconds())}`;
+    };
+
+    return {
+      list: rows.map((c) => ({
+        id: c.id,
+        name: c.name,
+        type: c.type,
+        value: Number(c.value),
+        minAmount: Number(c.min_amount),
+        startTime: fmt(c.start_time),
+        endTime: fmt(c.end_time),
+        totalCount: c.total_count,
+        receivedCount: c.received_count,
+        status: c.status,
+      })),
+      total,
+    };
   }
 }
 

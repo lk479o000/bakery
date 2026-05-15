@@ -87,6 +87,26 @@ class CouponController {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
   }
+
+  /**
+   * 后台管理：优惠券列表
+   */
+  async getCouponListForAdmin(req: Request, res: Response) {
+    try {
+      const { status, page, pageSize } = req.query;
+      const result = await couponService.listCouponsForAdmin({
+        status:
+          status !== undefined && status !== ''
+            ? parseInt(status as string, 10)
+            : undefined,
+        page: page ? parseInt(page as string, 10) : 1,
+        pageSize: pageSize ? parseInt(pageSize as string, 10) : 20,
+      });
+      res.json({ code: 200, message: 'ok', data: result });
+    } catch (error) {
+      res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
+    }
+  }
 }
 
 export default new CouponController();

@@ -1,13 +1,16 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import { $t } from '#/locales';
+import { RouteViewLayout } from '#/layouts';
 
 const routes: RouteRecordRaw[] = [
   {
+    component: RouteViewLayout,
     meta: {
       icon: 'lucide:shopping-bag',
+      /** 保留父级 `<RouterView />`，避免 access 在挂到根路由时删掉 component 导致 matched 链异常 */
+      keepParentView: true,
       order: 10,
-      title: $t('bakery.title'),
+      title: 'page.bakery.title',
     },
     name: 'Bakery',
     path: '/bakery',
@@ -18,7 +21,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/bakery/product/index.vue'),
         meta: {
           icon: 'lucide:cookie',
-          title: $t('bakery.product'),
+          title: 'page.bakery.product',
         },
       },
       {
@@ -27,7 +30,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/bakery/category/index.vue'),
         meta: {
           icon: 'lucide:folder',
-          title: $t('bakery.category'),
+          title: 'page.bakery.category',
         },
       },
       {
@@ -36,7 +39,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/bakery/order/index.vue'),
         meta: {
           icon: 'lucide:receipt',
-          title: $t('bakery.order'),
+          title: 'page.bakery.order',
         },
       },
       {
@@ -45,7 +48,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/bakery/user/index.vue'),
         meta: {
           icon: 'lucide:users',
-          title: $t('bakery.user'),
+          title: 'page.bakery.user',
         },
       },
       {
@@ -54,7 +57,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/bakery/coupon/index.vue'),
         meta: {
           icon: 'lucide:ticket',
-          title: $t('bakery.coupon'),
+          title: 'page.bakery.coupon',
         },
       },
       {
@@ -63,7 +66,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/bakery/store/index.vue'),
         meta: {
           icon: 'lucide:store',
-          title: $t('bakery.store'),
+          title: 'page.bakery.store',
         },
       },
       {
@@ -72,7 +75,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/bakery/recharge/index.vue'),
         meta: {
           icon: 'lucide:wallet',
-          title: $t('bakery.recharge'),
+          title: 'page.bakery.recharge',
         },
       },
       {
@@ -81,7 +84,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/bakery/banner/index.vue'),
         meta: {
           icon: 'lucide:image',
-          title: $t('bakery.banner'),
+          title: 'page.bakery.banner',
         },
       },
     ],

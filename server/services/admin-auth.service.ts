@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Admin from '../models/admin.model';
 import Role from '../models/role.model';
+import { JWT_SECRET } from '../config/jwt';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'bakery_admin_secret';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '8h';
 
 export interface LoginResult {
