@@ -111,14 +111,14 @@ const [Grid, tableAction] = useVbenTable({
     </NCard>
     <DetailModal>
       <div v-if="userDetail" class="space-y-4">
-        <div class="flex items-center gap-4 p-4 bg-gray-100 border border-gray-200 rounded-lg">
-          <img v-if="userDetail.avatar" :src="userDetail.avatar" class="w-20 h-20 rounded-full border-2 border-white shadow" />
+        <div class="flex items-center gap-4 p-4 bg-gray-50 dark:bg-[#1f1f1f] dark:text-white rounded">
+          <img v-if="userDetail.avatar" :src="userDetail.avatar" class="w-20 h-20 rounded-full" />
           <div>
-            <h3 class="font-bold text-lg text-gray-900">{{ userDetail.nickname }}</h3>
-            <p class="text-gray-500">ID: {{ userDetail.id }}</p>
+            <h3 class="font-bold text-lg dark:text-white">{{ userDetail.nickname }}</h3>
+            <p class="dark:text-white">ID: {{ userDetail.id }}</p>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-4 text-gray-700">
+        <div class="grid grid-cols-2 gap-4">
           <div><strong>手机号：</strong>{{ userDetail.phone || '-' }}</div>
           <div><strong>会员等级：</strong>{{ ['', '普通会员', '银卡会员', '金卡会员', '钻石会员'][userDetail.memberLevel] || `等级${userDetail.memberLevel}` }}</div>
           <div><strong>积分：</strong>{{ userDetail.points }}</div>

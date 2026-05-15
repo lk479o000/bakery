@@ -144,8 +144,8 @@ async function handleCancel(row: OrderApi.Order) {
     </NCard>
     <DetailModal>
       <div v-if="orderDetail" class="space-y-4">
-        <div class="flex justify-between items-center p-4 bg-gray-100 border border-gray-200 rounded-lg">
-          <span class="font-bold text-gray-900">订单编号：{{ orderDetail.orderNo }}</span>
+        <div class="flex justify-between items-center p-4 bg-gray-50 dark:bg-[#1f1f1f] dark:text-white rounded">
+          <span class="font-bold dark:text-white">订单编号：{{ orderDetail.orderNo }}</span>
           <span :class="[
             'px-2 py-1 rounded text-sm',
             orderDetail.status === 0 ? 'bg-yellow-100 text-yellow-800' :
@@ -157,7 +157,7 @@ async function handleCancel(row: OrderApi.Order) {
             {{ orderDetail.statusText }}
           </span>
         </div>
-        <div class="grid grid-cols-2 gap-4 text-gray-700">
+        <div class="grid grid-cols-2 gap-4">
           <div><strong>用户：</strong>{{ orderDetail.userName }}</div>
           <div><strong>订单类型：</strong>{{ orderDetail.typeText }}</div>
           <div><strong>支付方式：</strong>{{ orderDetail.payType === 'wechat' ? '微信支付' : '余额支付' }}</div>
@@ -167,8 +167,8 @@ async function handleCancel(row: OrderApi.Order) {
           <div><strong>创建时间：</strong>{{ formatAppDateTime(orderDetail.createTime, locale) }}</div>
           <div><strong>支付时间：</strong>{{ formatAppDateTime(orderDetail.payTime, locale) }}</div>
         </div>
-        <div v-if="orderDetail.remark" class="p-4 bg-gray-100 border border-gray-200 rounded-lg">
-          <strong>备注：</strong>{{ orderDetail.remark }}
+        <div v-if="orderDetail.remark" class="p-4 bg-gray-50 dark:bg-[#1f1f1f] dark:text-white rounded">
+          <strong class="dark:text-white">备注：</strong>{{ orderDetail.remark }}
         </div>
         <div>
           <h4 class="font-bold mb-2">商品列表</h4>
