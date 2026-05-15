@@ -22,7 +22,9 @@ export namespace BannerApi {
 }
 
 export async function getBannerListApi() {
-  return requestClient.get<BannerApi.Banner[]>('/banner/list');
+  return requestClient.get<BannerApi.Banner[]>('/banner/list', {
+    params: { includeDisabled: 1 },
+  });
 }
 
 export async function createBannerApi(data: BannerApi.CreateBannerParams) {

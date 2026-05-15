@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { nextTick } from 'vue';
+
 import { Page, useVbenModal } from '@vben/common-ui';
 import { useI18n } from '@vben/locales';
 import { useVbenTable } from '#/adapter/vxe-table';
@@ -20,6 +22,7 @@ const typeOptions = [
 const [Form, formApi] = useVbenForm({
   layout: 'vertical',
   wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+  showDefaultActions: false,
   handleSubmit: async (values) => {
     const data = values as CouponApi.CreateCouponParams;
     const current = modalApi.getData<CouponApi.Coupon>();
@@ -60,11 +63,19 @@ const [Form, formApi] = useVbenForm({
 const [Modal, modalApi] = useVbenModal({
   title: '优惠券管理',
   contentClass: 'max-h-[calc(100vh-200px)] overflow-auto',
+  fullscreenButton: false,
+  onCancel() {
+    modalApi.close();
+  },
+  async onConfirm() {
+    await formApi.validateAndSubmitForm();
+  },
   async onOpenChange(isOpen) {
     if (!isOpen) return;
     const data = modalApi.getData<CouponApi.Coupon>();
     await formApi.resetForm();
     if (data?.id) {
+      await nextTick();
       formApi.setValues(data);
     }
   },

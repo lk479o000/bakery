@@ -47,6 +47,7 @@ const [DetailModal, detailModalApi] = useVbenModal({
 const [StatusForm, statusFormApi] = useVbenForm({
   layout: 'vertical',
   wrapperClass: 'grid-cols-1',
+  showDefaultActions: false,
   handleSubmit: async (values) => {
     const orderId = statusModalApi.getData<OrderApi.Order>()?.id;
     if (!orderId) return;
@@ -68,6 +69,13 @@ const [StatusForm, statusFormApi] = useVbenForm({
 
 const [StatusModal, statusModalApi] = useVbenModal({
   title: '更新订单状态',
+  fullscreenButton: false,
+  onCancel() {
+    statusModalApi.close();
+  },
+  async onConfirm() {
+    await statusFormApi.validateAndSubmitForm();
+  },
   async onOpenChange(isOpen) {
     if (!isOpen) return;
     await statusFormApi.resetForm();

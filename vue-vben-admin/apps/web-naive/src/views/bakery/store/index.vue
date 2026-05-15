@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { nextTick } from 'vue';
+
 import { Page, useVbenModal } from '@vben/common-ui';
 import { useVbenTable } from '#/adapter/vxe-table';
 import { useVbenForm } from '#/adapter/form';
@@ -12,6 +14,7 @@ const message = useMessage();
 const [Form, formApi] = useVbenForm({
   layout: 'vertical',
   wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+  showDefaultActions: false,
   handleSubmit: async (values) => {
     const data = values as StoreApi.CreateStoreParams;
     const current = modalApi.getData<StoreApi.Store>();
@@ -65,11 +68,19 @@ const [Form, formApi] = useVbenForm({
 const [Modal, modalApi] = useVbenModal({
   title: '门店管理',
   contentClass: 'max-h-[calc(100vh-200px)] overflow-auto',
+  fullscreenButton: false,
+  onCancel() {
+    modalApi.close();
+  },
+  async onConfirm() {
+    await formApi.validateAndSubmitForm();
+  },
   async onOpenChange(isOpen) {
     if (!isOpen) return;
     const data = modalApi.getData<StoreApi.Store>();
     await formApi.resetForm();
     if (data?.id) {
+      await nextTick();
       const services = [];
       if (data.canDelivery) services.push('delivery');
       if (data.canPickup) services.push('pickup');

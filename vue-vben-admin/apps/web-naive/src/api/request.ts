@@ -84,7 +84,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
         if (code === undefined) {
           return true;
         }
-        return code === 200;
+        return code === 0 || code === 200;
       },
     }),
   );

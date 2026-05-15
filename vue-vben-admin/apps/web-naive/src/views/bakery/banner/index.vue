@@ -13,6 +13,7 @@ const message = useMessage();
 const [Form, formApi] = useVbenForm({
   layout: 'vertical',
   wrapperClass: 'grid-cols-1 md:grid-cols-2',
+  showDefaultActions: false,
   handleSubmit: async (values) => {
     const data = values as BannerApi.CreateBannerParams;
     const current = modalApi.getData<BannerApi.Banner>();
@@ -47,12 +48,23 @@ const [Form, formApi] = useVbenForm({
 const [Modal, modalApi] = useVbenModal({
   title: '轮播图管理',
   contentClass: 'max-h-[calc(100vh-200px)] overflow-auto',
+  fullscreenButton: false,
+  onCancel() {
+    modalApi.close();
+  },
+  async onConfirm() {
+    await formApi.validateAndSubmitForm();
+  },
   async onOpenChange(isOpen) {
     if (!isOpen) return;
     const data = modalApi.getData<BannerApi.Banner>();
     await formApi.resetForm();
     if (data?.id) {
-      formApi.setValues(data);
+      formApi.setValues({
+        ...data,
+        status: data.status == null ? 1 : Number(data.status),
+        sort: data.sort == null ? 0 : Number(data.sort),
+      });
     }
   },
 });

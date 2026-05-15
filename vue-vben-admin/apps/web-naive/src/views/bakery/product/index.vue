@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { nextTick, ref, computed } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { useI18n } from '@vben/locales';
@@ -24,7 +24,6 @@ const categoryOptions = computed(() => {
 const [Form, formApi] = useVbenForm({
   layout: 'vertical',
   wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-  /** 仅保留弹窗底部「确认 / 取消」，避免与表单「提交 / 重置」重复；确认见 useVbenModal.onConfirm */
   showDefaultActions: false,
   handleSubmit: async (values) => {
     const data = values as ProductApi.CreateProductParams;
@@ -70,8 +69,10 @@ const [Modal, modalApi] = useVbenModal({
     const data = modalApi.getData<ProductApi.Product>();
     await formApi.resetForm();
     if (data?.id) {
+      await nextTick();
       formApi.setValues(data);
     } else {
+      await nextTick();
       formApi.setValues({
         status: 1,
         canPickup: 1,

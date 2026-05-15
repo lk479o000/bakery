@@ -31,6 +31,7 @@ const [DetailModal, detailModalApi] = useVbenModal({
 const [BalanceForm, balanceFormApi] = useVbenForm({
   layout: 'vertical',
   wrapperClass: 'grid-cols-1',
+  showDefaultActions: false,
   handleSubmit: async (values) => {
     const userId = balanceModalApi.getData<UserApi.User>()?.id;
     if (!userId) return;
@@ -53,6 +54,13 @@ const [BalanceForm, balanceFormApi] = useVbenForm({
 
 const [BalanceModal, balanceModalApi] = useVbenModal({
   title: '余额充值',
+  fullscreenButton: false,
+  onCancel() {
+    balanceModalApi.close();
+  },
+  async onConfirm() {
+    await balanceFormApi.validateAndSubmitForm();
+  },
   async onOpenChange(isOpen) {
     if (isOpen) {
       await balanceFormApi.resetForm();
