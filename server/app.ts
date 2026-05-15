@@ -6,6 +6,25 @@ import { authMiddleware } from './middleware/auth.middleware';
 // 加载环境变量
 dotenv.config();
 
+// 导入模型（先导入模型！
+import Admin from './models/admin.model';
+import Role from './models/role.model';
+import AdminRole from './models/admin-role.model';
+
+// 建立模型关系
+Admin.belongsToMany(Role, {
+  through: AdminRole,
+  foreignKey: 'admin_id',
+  otherKey: 'role_id',
+  timestamps: false,
+});
+Role.belongsToMany(Admin, {
+  through: AdminRole,
+  foreignKey: 'role_id',
+  otherKey: 'admin_id',
+  timestamps: false,
+});
+
 // 导入路由
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
@@ -20,6 +39,7 @@ import categoryRoutes from './routes/category.routes';
 import storeRoutes from './routes/store.routes';
 import rechargePackageRoutes from './routes/recharge-package.routes';
 import paymentRoutes from './routes/payment.routes';
+import adminAuthRoutes from './routes/admin-auth.routes';
 
 // 创建 Express 应用
 const app = express();
@@ -37,20 +57,23 @@ app.get('/health', (req, res) => {
   res.json({ code: 0, message: 'ok', data: { status: 'healthy' } });
 });
 
-// 注册路由
+// 注册路由：先注册管理员路由（放在前面避免冲突
+app.use('/api', adminAuthRoutes);
+
+// 小程序路由
 app.use('/api/auth', authRoutes);
-app.use('/api/user', userRoutes);
+app.use('/api/user', authMiddleware, userRoutes);
 app.use('/api/product', productRoutes);
-app.use('/api/order', orderRoutes);
-app.use('/api/cart', cartRoutes);
-app.use('/api/coupon', couponRoutes);
-app.use('/api/address', addressRoutes);
-app.use('/api/balance', balanceRoutes);
+app.use('/api/order', authMiddleware, orderRoutes);
+app.use('/api/cart', authMiddleware, cartRoutes);
+app.use('/api/coupon', authMiddleware, couponRoutes);
+app.use('/api/address', authMiddleware, addressRoutes);
+app.use('/api/balance', authMiddleware, balanceRoutes);
 app.use('/api/banner', bannerRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/store', storeRoutes);
 app.use('/api/recharge-package', rechargePackageRoutes);
-app.use('/api/payment', paymentRoutes);
+app.use('/api/payment', authMiddleware, paymentRoutes);
 
 // 404 错误处理
 app.use((req, res) => {

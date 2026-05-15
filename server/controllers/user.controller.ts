@@ -13,7 +13,7 @@ class UserController {
 
       const result = await userService.getUserInfo(userId!);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -31,7 +31,7 @@ class UserController {
 
       const result = await userService.updateUserInfo(userId!, { nickname, avatar });
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -54,7 +54,7 @@ class UserController {
 
       const result = await userService.addPoints(userId!, points);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -71,7 +71,7 @@ class UserController {
 
       const result = await userService.getUserInfo(userId!);
 
-      res.json({ code: 0, message: 'ok', data: { balance: result.balance } });
+      res.json({ code: 200, message: 'ok', data: { balance: result.balance } });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -88,7 +88,7 @@ class UserController {
 
       const result = await userService.getMemberCode(userId!);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }

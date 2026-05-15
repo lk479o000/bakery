@@ -183,3 +183,38 @@ CREATE TABLE t_recharge_package (
     status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
 ) COMMENT='充值套餐表';
+
+-- 角色表
+CREATE TABLE t_role (
+    id VARCHAR(32) PRIMARY KEY COMMENT '主键，角色唯一标识',
+    name VARCHAR(64) NOT NULL COMMENT '角色名称',
+    code VARCHAR(64) UNIQUE NOT NULL COMMENT '角色编码：super-超级管理员，admin-管理员，user-普通用户',
+    description VARCHAR(255) COMMENT '角色描述',
+    status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+) COMMENT='角色表';
+
+-- 管理员表
+CREATE TABLE t_admin (
+    id VARCHAR(32) PRIMARY KEY COMMENT '主键，管理员唯一标识',
+    username VARCHAR(64) UNIQUE NOT NULL COMMENT '登录用户名',
+    password VARCHAR(255) NOT NULL COMMENT '密码（BCrypt加密）',
+    nickname VARCHAR(64) COMMENT '管理员昵称',
+    avatar VARCHAR(255) COMMENT '管理员头像URL',
+    phone VARCHAR(20) COMMENT '手机号',
+    email VARCHAR(128) COMMENT '邮箱',
+    status TINYINT DEFAULT 1 COMMENT '状态：0-禁用，1-启用',
+    last_login_time TIMESTAMP NULL COMMENT '最后登录时间',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+) COMMENT='管理员表';
+
+-- 管理员角色关联表
+CREATE TABLE t_admin_role (
+    admin_id VARCHAR(32) NOT NULL COMMENT '管理员ID，关联t_admin.id',
+    role_id VARCHAR(32) NOT NULL COMMENT '角色ID，关联t_role.id',
+    PRIMARY KEY (admin_id, role_id),
+    INDEX idx_admin_id (admin_id),
+    INDEX idx_role_id (role_id)
+) COMMENT='管理员角色关联表';

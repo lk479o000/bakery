@@ -13,7 +13,7 @@ class AddressController {
 
       const result = await addressService.getAddressList(userId!);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -30,7 +30,7 @@ class AddressController {
 
       const result = await addressService.getDefaultAddress(userId!);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -48,7 +48,7 @@ class AddressController {
 
       const result = await addressService.getAddressDetail(userId!, id);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -79,7 +79,7 @@ class AddressController {
         is_default: is_default || 0
       });
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -106,7 +106,7 @@ class AddressController {
         is_default
       });
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -124,7 +124,7 @@ class AddressController {
 
       const result = await addressService.deleteAddress(userId!, id);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -147,7 +147,7 @@ class AddressController {
 
       const result = await addressService.setDefaultAddress(userId!, id);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }

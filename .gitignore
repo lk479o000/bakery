@@ -50,3 +50,18 @@ images-demo/
 
 
 node_modules/
+
+# vue-vben-admin template files - DO NOT commit these to repository
+# Team should pull template from https://github.com/vbenjs/vue-vben-admin
+# 
+# Whitelist strategy: Only apps/ and 项目部署指南.md are committed
+# All other files are from the template and should be ignored
+
+# Ignore everything in vue-vben-admin
+vue-vben-admin/*
+vue-vben-admin/*/
+
+# But NOT these directories and files
+!vue-vben-admin/apps/
+!vue-vben-admin/apps/**/*
+!vue-vben-admin/项目部署指南.md

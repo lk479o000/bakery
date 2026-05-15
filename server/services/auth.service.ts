@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import User from '../models/user.model';
 import { generateToken } from '../middleware/auth.middleware';
 
@@ -6,10 +7,61 @@ function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
+// 简单的密码验证（生产环境应使用 bcrypt）
+function verifyPassword(inputPassword: string, storedPassword: string): boolean {
+  // 演示环境：密码明文比较（生产环境禁止）
+  // 测试用户的密码统一为：123456
+  return inputPassword === storedPassword;
+}
+
 // 内存缓存 session_key（生产环境应使用 Redis）
 const sessionCache = new Map<string, string>();
 
 class AuthService {
+  /**
+   * 用户名密码登录
+   * @param username 用户名（手机号或昵称）
+   * @param password 密码
+   * @returns 用户信息和token
+   */
+  async login(username: string, password: string) {
+    // 根据手机号或昵称查找用户
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [
+          { phone: username },
+          { nickname: username }
+        ]
+      }
+    });
+
+    if (!user) {
+      throw new Error('用户不存在');
+    }
+
+    // 验证密码（测试环境：密码固定为 123456）
+    if (!verifyPassword(password, '123456')) {
+      throw new Error('密码错误');
+    }
+
+    // 生成token
+    const token = generateToken(user.id, user.openid);
+
+    return {
+      user: {
+        id: user.id,
+        openid: user.openid,
+        nickname: user.nickname,
+        avatar: user.avatar,
+        phone: user.phone,
+        points: user.points,
+        balance: user.balance,
+        member_level: user.member_level
+      },
+      token
+    };
+  }
+
   /**
    * 微信登录
    * 使用 code 换取 openid 和 session_key
@@ -165,6 +217,33 @@ class AuthService {
       balance: user.balance,
       member_level: user.member_level
     };
+  }
+
+  /**
+   * 获取用户权限码列表
+   * @param userId 用户ID
+   * @returns 权限码列表
+   */
+  async getAccessCodes(userId: string) {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      throw new Error('用户不存在');
+    }
+
+    // 根据会员等级返回不同的权限码
+    const baseCodes = ['user', 'order', 'cart', 'coupon', 'address'];
+    
+    if (user.member_level >= 2) {
+      baseCodes.push('vip');
+    }
+    if (user.member_level >= 3) {
+      baseCodes.push('svip');
+    }
+    if (user.id === 'admin001') {
+      baseCodes.push('admin');
+    }
+
+    return baseCodes;
   }
 }
 

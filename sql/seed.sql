@@ -3,6 +3,20 @@ USE bakery;
 
 -- 基础数据插入SQL
 
+-- 初始化默认角色数据
+INSERT INTO t_role (id, name, code, description) VALUES
+('role_super', '超级管理员', 'super', '拥有系统最高权限'),
+('role_admin', '管理员', 'admin', '拥有系统管理权限'),
+('role_user', '普通用户', 'user', '拥有基础操作权限');
+
+-- 初始化默认管理员（密码：123456）
+INSERT INTO t_admin (id, username, password, nickname, status) VALUES
+('admin_super', 'admin', '$2b$10$ym/V5d4eV2B9KBjMjejt3OjU/eg2oWTzZtbpZnERfioektBlUwHv6', '超级管理员', 1);
+
+-- 给管理员分配角色（超级管理员角色）
+INSERT INTO t_admin_role (admin_id, role_id) VALUES
+('admin_super', 'role_super');
+
 -- 插入商品分类（对齐线上版本）
 INSERT INTO t_category (id, name, icon, sort, status) VALUES
 ('cat001', '甜面包', 'https://example.com/icons/sweet-bread.png', 1, 1),

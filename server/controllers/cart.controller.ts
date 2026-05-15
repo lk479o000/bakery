@@ -13,7 +13,7 @@ class CartController {
 
       const result = await cartService.getCartList(userId!);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -41,7 +41,7 @@ class CartController {
 
       const result = await cartService.addToCart(userId!, product_id, quantity);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -65,7 +65,7 @@ class CartController {
 
       const result = await cartService.updateCartItem(userId!, id, quantity);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -84,7 +84,7 @@ class CartController {
 
       const result = await cartService.updateCartItemSelected(userId!, id, selected);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -102,7 +102,7 @@ class CartController {
 
       const result = await cartService.updateAllCartItemsSelected(userId!, selected);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -120,7 +120,7 @@ class CartController {
 
       const result = await cartService.deleteCartItem(userId!, id);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -137,7 +137,7 @@ class CartController {
 
       const result = await cartService.clearCart(userId!);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -154,7 +154,7 @@ class CartController {
 
       const result = await cartService.getSelectedCartItems(userId!);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }

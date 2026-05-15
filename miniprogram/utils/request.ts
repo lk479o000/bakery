@@ -46,7 +46,7 @@ export function request<T = any>(options: RequestOptions): Promise<T> {
         const response = res.data as ApiResponse<T>;
         
         // 处理成功响应
-        if (response.code === 0 || response.code === 200) {
+        if (response.code === 200) {
           resolve(response.data);
         } else if (response.code === 401) {
           // 401未授权，清除token并跳转到登录页

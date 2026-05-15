@@ -5,7 +5,7 @@ class RechargePackageController {
   async getPackageList(req: Request, res: Response) {
     try {
       const result = await rechargePackageService.getPackageList();
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -21,7 +21,7 @@ class RechargePackageController {
       }
 
       const result = await rechargePackageService.createRecharge(userId, packageId);
-      res.json({ code: 0, message: '充值成功', data: result });
+      res.json({ code: 200, message: '充值成功', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }

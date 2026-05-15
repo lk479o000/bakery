@@ -12,7 +12,7 @@ class PaymentController {
       }
 
       const result = await paymentService.createPayment(orderId, payType as 'wechat' | 'balance');
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -28,7 +28,7 @@ class PaymentController {
       }
 
       const result = await paymentService.queryPayment(orderId as string);
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -44,7 +44,7 @@ class PaymentController {
       }
 
       const response = await paymentService.paymentCallback(orderId, result);
-      res.json({ code: 0, message: 'ok', data: response });
+      res.json({ code: 200, message: 'ok', data: response });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }

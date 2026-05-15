@@ -31,7 +31,7 @@ class OrderController {
         remark
       });
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -59,7 +59,7 @@ class OrderController {
 
       const result = await orderService.payOrder(userId!, order_id, pay_type);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -81,7 +81,7 @@ class OrderController {
         pageSize: pageSize ? parseInt(pageSize as string) : 20
       });
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -99,7 +99,7 @@ class OrderController {
 
       const result = await orderService.getOrderDetail(userId!, id);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -122,7 +122,7 @@ class OrderController {
 
       const result = await orderService.cancelOrder(userId!, order_id);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }

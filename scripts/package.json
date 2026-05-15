@@ -1,0 +1,10 @@
+{
+  "name": "bakery-scripts",
+  "version": "1.0.0",
+  "description": "Utility scripts for bakery project",
+  "dependencies": {
+    "pixelmatch": "^7.2.0",
+    "sharp": "^0.34.5"
+  },
+  "packageManager": "pnpm@9.15.9"
+}

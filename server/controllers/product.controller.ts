@@ -17,7 +17,7 @@ class ProductController {
         pageSize: pageSize ? parseInt(pageSize as string) : 20
       });
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -34,7 +34,7 @@ class ProductController {
 
       const result = await productService.getProductDetail(id);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }
@@ -56,7 +56,7 @@ class ProductController {
 
       const result = await productService.getProductsByIds(productIds);
 
-      res.json({ code: 0, message: 'ok', data: result });
+      res.json({ code: 200, message: 'ok', data: result });
     } catch (error) {
       res.status(500).json({ code: 500, message: (error as Error).message || '服务器内部错误', data: null });
     }

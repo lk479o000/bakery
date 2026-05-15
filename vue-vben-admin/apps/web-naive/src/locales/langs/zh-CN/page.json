@@ -1,0 +1,45 @@
+{
+  "dashboard": {
+    "title": "仪表盘",
+    "analytics": "数据分析",
+    "workspace": "工作区"
+  },
+  "demos": {
+    "vben": {
+      "title": "Vben Admin",
+      "document": "文档",
+      "antdv": "Ant Design Vue",
+      "antdv-next": "Ant Design Vue Next",
+      "element-plus": "Element Plus"
+    },
+    "form": {
+      "basic": "基础表单",
+      "modal": "弹窗表单"
+    },
+    "naive": {
+      "title": "Naive UI"
+    },
+    "table": {
+      "title": "表格"
+    }
+  },
+  "bakery": {
+    "title": "面包店管理",
+    "product": "商品管理",
+    "category": "分类管理",
+    "order": "订单管理",
+    "user": "用户管理",
+    "coupon": "优惠券管理",
+    "store": "门店管理",
+    "recharge": "充值套餐",
+    "banner": "轮播图管理"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "codeLogin": "验证码登录",
+    "qrcodeLogin": "二维码登录",
+    "forgetPassword": "忘记密码",
+    "profile": "个人中心"
+  }
+}
