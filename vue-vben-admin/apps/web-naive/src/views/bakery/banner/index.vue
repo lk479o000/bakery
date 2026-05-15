@@ -6,6 +6,7 @@ import { useVbenForm } from '#/adapter/form';
 import { NCard, useMessage } from 'naive-ui';
 
 import { getBannerListApi, createBannerApi, updateBannerApi, deleteBannerApi, type BannerApi } from '#/api/bakery/banner';
+import { imageUrlWithUploadSchema } from '#/views/bakery/schema/image-url-with-upload';
 
 const message = useMessage();
 
@@ -26,7 +27,11 @@ const [Form, formApi] = useVbenForm({
     tableAction.refresh();
   },
   schema: [
-    { component: 'Input', fieldName: 'image', label: '图片URL', rules: 'required' },
+    imageUrlWithUploadSchema(message, {
+      fieldName: 'image',
+      label: '图片',
+      rules: 'required',
+    }),
     { component: 'Input', fieldName: 'link', label: '跳转链接' },
     { component: 'InputNumber', fieldName: 'sort', label: '排序', componentProps: { min: 0 } },
     {

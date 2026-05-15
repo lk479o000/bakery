@@ -14,7 +14,7 @@ export const uploadImage = async (req: Request, res: Response, next: NextFunctio
     const result = await uploadService.upload(req.file);
     
     res.json({
-      code: 0,
+      code: 200,
       message: '上传成功',
       data: result
     });

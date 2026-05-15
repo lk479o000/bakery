@@ -10,6 +10,7 @@ import { NCard, useMessage } from 'naive-ui';
 
 import { getProductListApi, createProductApi, updateProductApi, deleteProductApi, type ProductApi } from '#/api/bakery/product';
 import { getCategoryListApi, type CategoryApi } from '#/api/bakery/category';
+import { imageUrlWithUploadSchema } from '#/views/bakery/schema/image-url-with-upload';
 import { formatAppDateTime } from '#/utils/format-app-datetime';
 
 const message = useMessage();
@@ -44,7 +45,7 @@ const [Form, formApi] = useVbenForm({
     { component: 'Input', fieldName: 'description', label: '商品描述', componentProps: { type: 'textarea' } },
     { component: 'InputNumber', fieldName: 'price', label: '售价', rules: 'required', componentProps: { min: 0, step: 0.01 } },
     { component: 'InputNumber', fieldName: 'originalPrice', label: '原价', componentProps: { min: 0, step: 0.01 } },
-    { component: 'Input', fieldName: 'image', label: '商品图片URL' },
+    imageUrlWithUploadSchema(message, { fieldName: 'image', label: '商品图片' }),
     { component: 'InputNumber', fieldName: 'stock', label: '库存', componentProps: { min: 0 } },
     { component: 'RadioGroup', fieldName: 'status', label: '状态', rules: 'selectRequired', componentProps: { options: [{ value: 1, label: '上架' }, { value: 0, label: '下架' }] } },
     { component: 'RadioGroup', fieldName: 'canPickup', label: '自取可售', rules: 'selectRequired', componentProps: { options: [{ value: 1, label: '是' }, { value: 0, label: '否' }] } },

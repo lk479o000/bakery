@@ -6,6 +6,7 @@ import { useVbenForm } from '#/adapter/form';
 import { NCard, useMessage } from 'naive-ui';
 
 import { getCategoryListApi, createCategoryApi, updateCategoryApi, deleteCategoryApi, type CategoryApi } from '#/api/bakery/category';
+import { imageUrlWithUploadSchema } from '#/views/bakery/schema/image-url-with-upload';
 
 const message = useMessage();
 
@@ -27,7 +28,7 @@ const [Form, formApi] = useVbenForm({
   },
   schema: [
     { component: 'Input', fieldName: 'name', label: '分类名称', rules: 'required' },
-    { component: 'Input', fieldName: 'icon', label: '图标URL' },
+    imageUrlWithUploadSchema(message, { fieldName: 'icon', label: '分类图标' }),
     { component: 'InputNumber', fieldName: 'sort', label: '排序', componentProps: { min: 0 } },
     {
       component: 'RadioGroup',
